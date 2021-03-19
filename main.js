@@ -2,11 +2,13 @@ import { OrbitControls } from './lib/OrbitControls.js'
 
 const scene = new THREE.Scene();
 
+// scene.background = 0xffffff;
+
 
 const camera = new THREE.PerspectiveCamera(85, window.innerWidth / window.innerHeight, .1, 1500);
 
 camera.position.y = 2;
-camera.position.x = 2;
+camera.position.x = -2;
 camera.position.z = 3;
 
 camera.lookAt(0, 0, 0);
@@ -24,40 +26,49 @@ document.getElementById('playground').appendChild(renderer.domElement);
 const orbitControl = new OrbitControls(camera, renderer.domElement)
 
 // player object
-const player_geometry = new THREE.BoxGeometry(1, 1, 1);
+const player_geometry = new THREE.BoxGeometry(1, 1, 1, 4);
 const player_material = new THREE.MeshPhongMaterial({ color: 0xff0000});
 
 const player_object = new THREE.Mesh(player_geometry, player_material)
 
-player_object.position.y = 0.5;
+player_object.position.y = 0;
 player_object.castShadow = true;
+
+player_object.name = 'player'
 
 scene.add(player_object)
 
 const color = 0xFFFFFF;
 const intensity = 1;
 
-const light = new THREE.DirectionalLight(color, intensity);
+const dir_light = new THREE.DirectionalLight(color, intensity);
 
-light.position.set(150, 100, 5);
-light.target.position.set(0, 0, 0);
-light.shadow.mapSize.width = 1000
-light.shadow.mapSize.height = 1000
-light.castShadow = true;
+dir_light.position.set(150, 100, 5);
+dir_light.target.position.set(0, 0, 0);
+dir_light.shadow.mapSize.width = 1000
+dir_light.shadow.mapSize.height = 1000
+dir_light.castShadow = true;
 
-scene.add(light);
-scene.add(light.target);
+scene.add(dir_light);
+scene.add(dir_light.target);
+
+const hemi_light = new THREE.AmbientLight(0xaaaaaa, 1);
+
+scene.add(hemi_light)
 
 
-const groundGeo = new THREE.PlaneGeometry( 10, 10, 5, 5);
-const groundMat = new THREE.MeshPhongMaterial( { color: 0xf1f1f1} );
+const groundGeo = new THREE.PlaneGeometry( 100, 10, 5, 5);
+const groundMat = new THREE.MeshStandardMaterial( { color: 0xaaaaaa} );
 
 const ground = new THREE.Mesh( groundGeo, groundMat );
 
-ground.position.y = 0;
+ground.position.y = -0.5;
 ground.rotation.x = - Math.PI / 2;
 ground.castShadow = false;
 ground.receiveShadow = true;
+
+ground.name = 'ground';
+
 scene.add( ground );
 
 
@@ -81,13 +92,55 @@ document.addEventListener('keydown', (event) => {
 		case 37: // left
 			player_object.position.x -= player_movement_speed;
 			break;
+		case 32: // spacebar
+			jump(event)
+			break;
 	}
 })
 
+let jumping,
+	a_y = 0.5,
+	v_y;
+
+function jump(e)
+{
+	if(jumping)
+	{
+		e.preventDefault()
+		return;
+	}
+	console.log("Jumping...");
+	v_y = 10;
+	jumping = true;
+}
+
+function motion()
+{
+	if(jumping)
+	{
+		let dif = (v_y - a_y) / 30
+		if(player_object.position.y + dif <= 0)
+		{
+			player_object.position.y = 0;
+			jumping = false
+			return
+		}
+		player_object.position.y += dif;
+		v_y -= a_y;
+
+		console.log("pos: ", player_object.position.y);
+	}
+}
+
+let raycaster = new THREE.Raycaster();
+
+console.log(">>>", scene.children)
 
 function animate()
 {
 	requestAnimationFrame(animate);
+
+	motion()
 
 	renderer.render(scene, camera);
 }
