@@ -43,7 +43,7 @@ const intensity = 1;
 
 const dir_light = new THREE.DirectionalLight(color, intensity);
 
-dir_light.position.set(150, 100, 5);
+dir_light.position.set(150, 100, 105);
 dir_light.target.position.set(0, 0, 0);
 dir_light.shadow.mapSize.width = 1000
 dir_light.shadow.mapSize.height = 1000
