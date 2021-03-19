@@ -2,14 +2,14 @@ import { OrbitControls } from './lib/OrbitControls.js'
 
 const scene = new THREE.Scene();
 
-// scene.background = 0xffffff;
+scene.background = 0xffffff;
 
 
 const camera = new THREE.PerspectiveCamera(85, window.innerWidth / window.innerHeight, .1, 1500);
 
 camera.position.y = 2;
 camera.position.x = -2;
-camera.position.z = 3;
+camera.position.z = 5;
 
 camera.lookAt(0, 0, 0);
 
@@ -57,7 +57,7 @@ const hemi_light = new THREE.AmbientLight(0xaaaaaa, 1);
 scene.add(hemi_light)
 
 
-const groundGeo = new THREE.PlaneGeometry( 100, 10, 5, 5);
+const groundGeo = new THREE.PlaneGeometry( 1000, 10, 5, 5);
 const groundMat = new THREE.MeshStandardMaterial( { color: 0xaaaaaa} );
 
 const ground = new THREE.Mesh( groundGeo, groundMat );
