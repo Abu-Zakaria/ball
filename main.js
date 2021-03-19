@@ -98,7 +98,7 @@ document.addEventListener('keydown', (event) => {
 	}
 })
 
-document.addEventListener('click', (event) => {
+document.getElementById('jump_button').addEventListener('click', (event) => {
 	jump(event)
 })
 
