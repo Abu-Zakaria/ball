@@ -98,6 +98,10 @@ document.addEventListener('keydown', (event) => {
 	}
 })
 
+document.addEventListener('click', (event) => {
+	jump(event)
+})
+
 let jumping,
 	a_y = 0.5,
 	v_y;
