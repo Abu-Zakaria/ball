@@ -9,7 +9,8 @@ scene.background = 0xffffff;
 
 const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, .1, 1500);
 
-camera.position.y = 6;
+const camera_y_pos = 6
+camera.position.y = camera_y_pos;
 camera.position.x = -4;
 camera.position.z = 6;
 
@@ -146,10 +147,12 @@ function motionJump()
 		if(player_object.position.y + dif <= 0)
 		{
 			player_object.position.y = 0;
+			camera.position.y = camera_y_pos
 			jumping = false
 			return
 		}
 		player_object.position.y += dif;
+		camera.position.y += dif / 2
 		v_y -= a_y;
 	}
 }
