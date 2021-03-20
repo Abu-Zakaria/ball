@@ -99,19 +99,19 @@ document.addEventListener('keydown', (event) => {
 	let key_code = event.keyCode
 	switch(key_code)
 	{
-		case 38: // up arrow
-			player_object.position.y += player_movement_speed;
-			break;
-		case 40: // down
-			player_object.position.y -= player_movement_speed;
-			break;
-		case 39: // right
-			player_object.position.x += player_movement_speed;
-			console.log("going right")
-			break;
-		case 37: // left
-			player_object.position.x -= player_movement_speed;
-			break;
+		// case 38: // up arrow
+		// 	player_object.position.y += player_movement_speed;
+		// 	break;
+		// case 40: // down
+		// 	player_object.position.y -= player_movement_speed;
+		// 	break;
+		// case 39: // right
+		// 	player_object.position.x += player_movement_speed;
+		// 	console.log("going right")
+		// 	break;
+		// case 37: // left
+		// 	player_object.position.x -= player_movement_speed;
+		// 	break;
 		case 32: // spacebar
 			jump(event)
 			break;
@@ -161,13 +161,19 @@ clock.start();
 let enemies = [];
 let enemies_number = 20;
 
-for (var i = 0; i < enemies_number; i++)
+function addEnemies()
 {
-	let enemy_obj = new Enemy(scene, clock);
-	enemy_obj.makeBox();
+	console.log("Adding....")
+	for (var i = 0; i < enemies_number; i++)
+	{
+		let enemy_obj = new Enemy(scene, clock);
+		enemy_obj.makeBox();
 
-	enemies.push(enemy_obj)
+		enemies.push(enemy_obj)
+	}
 }
+
+addEnemies()
 
 let game_over = false
 
@@ -213,3 +219,20 @@ function animate()
 }
 
 animate();
+
+document.getElementById('retry_button').addEventListener('click', function(e)
+{
+	console.log("ASD");
+
+	for (var i = 0; i < enemies.length; i++) {
+		let _enemy = enemies[i]
+		scene.remove(_enemy.object)
+	}
+
+	enemies = []
+
+	addEnemies();
+	game_over = false
+
+	document.getElementById('game_over').style.display = 'none'
+})
