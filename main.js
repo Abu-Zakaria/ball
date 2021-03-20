@@ -29,7 +29,7 @@ const orbitControl = new OrbitControls(camera, renderer.domElement)
 
 // player object
 const player_geometry = new THREE.SphereGeometry(0.7, 100, 100);
-const player_material = new THREE.MeshPhongMaterial({ color: 0xff0000});
+const player_material = new THREE.MeshPhongMaterial({ color: 0x00ffff});
 
 const player_object = new THREE.Mesh(player_geometry, player_material)
 
