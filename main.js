@@ -139,7 +139,7 @@ function motionJump()
 
 let enemies = [];
 
-for (var i = 0; i < 50; i++)
+for (var i = 0; i < 10; i++)
 {
 	let enemy_obj = new Enemy();
 	enemy_obj.makeBox();

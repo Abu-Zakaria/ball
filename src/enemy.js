@@ -10,7 +10,7 @@ export default class Enemy
 		this.radius = 1;
 		this.spawn_point
 
-		this.spawn_point = randomNumber(10, 1000)
+		this.spawn_point = randomNumber(10, 200)
 	}
 
 	makeBox()
