@@ -137,23 +137,34 @@ function motionJump()
 }
 
 
-let enemy_obj = new Enemy();
-enemy_obj.makeBox();
+let enemies = [];
 
-scene.add(enemy_obj.object);
+for (var i = 0; i < 50; i++)
+{
+	let enemy_obj = new Enemy();
+	enemy_obj.makeBox();
+
+	scene.add(enemy_obj.object);
+
+	enemies.push(enemy_obj)
+}
 
 let game_over = false
 
 function motionEnemies()
 {
-	enemy_obj.moveLeft();
+	for (var i = 0; i < enemies.length; i++) {
+		let enemy = enemies[i]
 
-	if(enemy_obj.hasCollided(player_object))
-	{
-		let game_over_modal = document.getElementById('game_over')
-		game_over_modal.style.display = 'block'
+		enemy.moveLeft();
 
-		game_over = true
+		if(enemy.hasCollided(player_object))
+		{
+			let game_over_modal = document.getElementById('game_over')
+			game_over_modal.style.display = 'block'
+
+			game_over = true
+		}
 	}
 }
 

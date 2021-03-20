@@ -1,13 +1,16 @@
-import { getDistance } from './utils.js'
+import { getDistance, randomNumber } from './utils.js'
 
 export default class Enemy
 {
 	constructor()
 	{
 		this.object = null;
-		this.speed = 0.09;
+		this.speed = 0.1;
 		this.geometry = null;
 		this.radius = 1;
+		this.spawn_point
+
+		this.spawn_point = randomNumber(10, 1000)
 	}
 
 	makeBox()
@@ -18,7 +21,7 @@ export default class Enemy
 
 		this.object = new THREE.Mesh(this.geometry, material)
 
-		this.object.position.x = 10
+		this.object.position.x = this.spawn_point
 
 		return this.object
 	}
