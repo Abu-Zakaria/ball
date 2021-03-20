@@ -7,11 +7,11 @@ const scene = new THREE.Scene();
 scene.background = 0xffffff;
 
 
-const camera = new THREE.PerspectiveCamera(85, window.innerWidth / window.innerHeight, .1, 1500);
+const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, .1, 1500);
 
-camera.position.y = 2;
-camera.position.x = -2;
-camera.position.z = 5;
+camera.position.y = 6;
+camera.position.x = -4;
+camera.position.z = 6;
 
 camera.lookAt(0, 0, 0);
 
@@ -28,22 +28,22 @@ document.getElementById('playground').appendChild(renderer.domElement);
 const orbitControl = new OrbitControls(camera, renderer.domElement)
 
 // player object
-const player_geometry = new THREE.BoxGeometry(1, 1, 1, 4);
+const player_geometry = new THREE.SphereGeometry(0.7, 100, 100);
 const player_material = new THREE.MeshPhongMaterial({ color: 0xff0000});
 
 const player_object = new THREE.Mesh(player_geometry, player_material)
 
-player_object.position.y = 0;
+player_object.position.y = 0.2;
 player_object.castShadow = true;
 
 player_object.name = 'player'
 
 scene.add(player_object)
 
-const color = 0xFFFFFF;
-const intensity = 1;
+const dir_color = 0xFFFFFF;
+const dir_intensity = 0;
 
-const dir_light = new THREE.DirectionalLight(color, intensity);
+const dir_light = new THREE.DirectionalLight(dir_color, dir_intensity);
 
 dir_light.position.set(150, 100, 105);
 dir_light.target.position.set(0, 0, 0);
@@ -54,12 +54,30 @@ dir_light.castShadow = true;
 scene.add(dir_light);
 scene.add(dir_light.target);
 
-const hemi_light = new THREE.AmbientLight(0xaaaaaa, 1);
+const spot_color = 0xFFFFFF;
+const spot_intensity = 2;
+const spot_distance = 30
+const spot_angle = 60
+const spot_penumbra = 0
+
+const spot_light = new THREE.SpotLight(spot_color, spot_intensity, spot_distance, spot_angle, spot_penumbra);
+
+spot_light.position.set(2, 20, 0)
+spot_light.caseShadow = true;
+spot_light.shadow.mapSize.width = 200
+spot_light.shadow.mapSize.height = 300
+
+spot_light.shadow.camera.near = 1
+spot_light.shadow.camera.far = 1
+
+scene.add(spot_light);
+
+const hemi_light = new THREE.HemisphereLight(0xffffff, 0xaaaaaa, 0.9);
 
 scene.add(hemi_light)
 
 
-const groundGeo = new THREE.PlaneGeometry( 1000, 10, 5, 5);
+const groundGeo = new THREE.PlaneGeometry( 1000, 20, 5, 5);
 const groundMat = new THREE.MeshStandardMaterial( { color: 0xaaaaaa} );
 
 const ground = new THREE.Mesh( groundGeo, groundMat );
@@ -137,14 +155,16 @@ function motionJump()
 }
 
 
+let clock = new THREE.Clock()
+clock.start();
+
 let enemies = [];
+let enemies_number = 20;
 
-for (var i = 0; i < 10; i++)
+for (var i = 0; i < enemies_number; i++)
 {
-	let enemy_obj = new Enemy();
+	let enemy_obj = new Enemy(scene, clock);
 	enemy_obj.makeBox();
-
-	scene.add(enemy_obj.object);
 
 	enemies.push(enemy_obj)
 }
@@ -156,14 +176,24 @@ function motionEnemies()
 	for (var i = 0; i < enemies.length; i++) {
 		let enemy = enemies[i]
 
-		enemy.moveLeft();
+		enemy.check_status();
 
-		if(enemy.hasCollided(player_object))
+		if(enemy.isVisible())
 		{
-			let game_over_modal = document.getElementById('game_over')
-			game_over_modal.style.display = 'block'
+			enemy.moveLeft();
 
-			game_over = true
+			if(enemy.hasCollided(player_object))
+			{
+				let game_over_modal = document.getElementById('game_over')
+				game_over_modal.style.display = 'block'
+
+				game_over = true
+			}
+
+			if(enemy.getPosition().x < -10)
+			{
+				scene.remove(enemy.object)
+			}
 		}
 	}
 }

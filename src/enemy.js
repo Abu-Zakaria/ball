@@ -2,15 +2,32 @@ import { getDistance, randomNumber } from './utils.js'
 
 export default class Enemy
 {
-	constructor()
+	constructor(scene, clock)
 	{
 		this.object = null;
-		this.speed = 0.1;
+		this.speed = 0.12;
 		this.geometry = null;
 		this.radius = 1;
-		this.spawn_point
+		this.spawn_point = 20
+		this.spawn_time = randomNumber(1, 30);
+		this.visible = false
+		this.scene = scene
+		this.clock = clock
+	}
 
-		this.spawn_point = randomNumber(10, 200)
+	isVisible()
+	{
+		return this.visible
+	}
+
+	setVisible(visiblity)
+	{
+		this.visible = visiblity
+	}
+
+	getSpawnTime()
+	{
+		return this.spawn_time
 	}
 
 	makeBox()
@@ -40,5 +57,23 @@ export default class Enemy
 			return true
 		}
 		return false
+	}
+
+	getPosition()
+	{
+		return {
+			x: this.object.position.x,
+			y: this.object.position.y,
+			z: this.object.position.z
+		}
+	}
+
+	check_status()
+	{
+		if(this.spawn_time < this.clock.getElapsedTime())
+		{
+			this.setVisible(true)
+			this.scene.add(this.object)
+		}
 	}
 }
