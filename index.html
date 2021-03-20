@@ -24,6 +24,20 @@
 			outline: none;
 			border-radius: 5px;
 		}
+
+		#game_over
+		{
+			display: none;
+			position: fixed;
+			background: rgba(255, 0, 0, 0.4);
+			border: 2px solid #ddd;
+			border-radius: 10px;
+			left: 43%;
+			top: 46%;
+			width: 14%;
+			padding: 10px;
+			text-align: center
+		}
 	</style>
 </head>
 <body>
@@ -31,6 +45,10 @@
 	<div id="playground"></div>
 
 	<button id="jump_button">Jump</button>
+
+	<div id="game_over">
+		<h2>Game Over!</h2>
+	</div>
 
 	<script src="lib/three.js"></script>
 

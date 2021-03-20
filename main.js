@@ -1,4 +1,6 @@
 import { OrbitControls } from './lib/OrbitControls.js'
+import Enemy from './src/enemy.js'
+import { getDistance } from './src/utils.js'
 
 const scene = new THREE.Scene();
 
@@ -118,7 +120,7 @@ function jump(e)
 	jumping = true;
 }
 
-function motion()
+function motionJump()
 {
 	if(jumping)
 	{
@@ -131,20 +133,40 @@ function motion()
 		}
 		player_object.position.y += dif;
 		v_y -= a_y;
-
-		console.log("pos: ", player_object.position.y);
 	}
 }
 
-let raycaster = new THREE.Raycaster();
 
-console.log(">>>", scene.children)
+let enemy_obj = new Enemy();
+enemy_obj.makeBox();
+
+scene.add(enemy_obj.object);
+
+let game_over = false
+
+function motionEnemies()
+{
+	enemy_obj.moveLeft();
+
+	if(enemy_obj.hasCollided(player_object))
+	{
+		let game_over_modal = document.getElementById('game_over')
+		game_over_modal.style.display = 'block'
+
+		game_over = true
+	}
+}
 
 function animate()
 {
 	requestAnimationFrame(animate);
 
-	motion()
+	motionJump()
+
+	if(!game_over)
+	{
+		motionEnemies();
+	}
 
 	renderer.render(scene, camera);
 }
