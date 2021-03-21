@@ -26,10 +26,11 @@ camera.lookAt(0, 0, 0);
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 
-renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = true;
-renderer.setPixelRatio(window.devicePixelRatio)
+// console.log()
+// renderer.setPixelRatio(window.devicePixelRatio)
+renderer.setSize(window.innerWidth, window.innerHeight);
 
 
 document.getElementById('playground').appendChild(renderer.domElement);
