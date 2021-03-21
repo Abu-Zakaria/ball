@@ -25,7 +25,7 @@ export default class Wall
 
 			this.object = new THREE.Mesh(geometry, material);
 
-			// this.object.position.z = -5;
+			this.object.position.z = -5;
 			this.object.position.y = this.height / 2;
 
 			scene.add(this.object)
