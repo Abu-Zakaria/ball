@@ -142,7 +142,7 @@ let clock = new THREE.Clock()
 clock.start();
 
 let enemies = [];
-let enemies_number = 5;
+let enemies_number = 100;
 
 function addEnemies()
 {

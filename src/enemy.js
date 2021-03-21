@@ -9,7 +9,7 @@ export default class Enemy
 		this.geometry = null;
 		this.radius = 1;
 		this.spawn_point = 20
-		this.spawn_time = randomNumber(1, 30);
+		this.spawn_time = randomNumber(1, 80);
 		this.visible = false
 		this.scene = scene
 		this.clock = clock
