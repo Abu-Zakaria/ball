@@ -34,7 +34,7 @@ renderer.setPixelRatio(window.devicePixelRatio)
 
 document.getElementById('playground').appendChild(renderer.domElement);
 
-const orbitControl = new OrbitControls(camera, renderer.domElement)
+// const orbitControl = new OrbitControls(camera, renderer.domElement)
 
 // player object
 const player_geometry = new THREE.SphereGeometry(0.7, 100, 100);
