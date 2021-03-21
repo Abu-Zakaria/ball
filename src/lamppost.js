@@ -21,6 +21,7 @@ export default class Lamppost
 
 			gltf.scene.scale.set(this.scale, this.scale, this.scale)
 			gltf.scene.position.x = this.front_position
+			gltf.scene.position.y = - 0.3
 			gltf.scene.position.z = - this.far_position
 
 			let lights = new Lights()
@@ -39,6 +40,7 @@ export default class Lamppost
 
 			gltf.scene.scale.set(this.scale, this.scale, this.scale)
 			gltf.scene.position.x = this.front_position
+			gltf.scene.position.y = - 0.3
 			gltf.scene.position.z = this.far_position
 
 			let lights = new Lights()
