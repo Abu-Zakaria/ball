@@ -1,10 +1,14 @@
 import { OrbitControls } from './lib/OrbitControls.js'
+
 import Enemy from './src/enemy.js'
 import { getDistance } from './src/utils.js'
 import Sound from './src/sound.js'
 import Wall from './src/wall.js'
 import Ground from './src/ground.js'
 import Score from './src/score.js'
+import Lights from './src/lights.js'
+import Lamppost from './src/lamppost.js'
+import Footpath from './src/footpath.js'
 
 const scene = new THREE.Scene();
 
@@ -31,11 +35,11 @@ renderer.shadowMap.type = true;
 // console.log()
 // renderer.setPixelRatio(window.devicePixelRatio)
 renderer.setSize(window.innerWidth, window.innerHeight);
-
+renderer.outputEncoding = THREE.sRGBEncoding
 
 document.getElementById('playground').appendChild(renderer.domElement);
 
-// const orbitControl = new OrbitControls(camera, renderer.domElement)
+const orbitControl = new OrbitControls(camera, renderer.domElement)
 
 // player object
 const player_geometry = new THREE.SphereGeometry(0.7, 100, 100);
@@ -50,41 +54,20 @@ player_object.name = 'player'
 
 scene.add(player_object)
 
-const dir_color = 0xFFFFFF;
-const dir_intensity = 0;
+let lights = new Lights()
 
-const dir_light = new THREE.DirectionalLight(dir_color, dir_intensity);
+// lights.makeSpotlight(scene)
 
-dir_light.position.set(150, 100, 105);
-dir_light.target.position.set(0, 0, 0);
-dir_light.shadow.mapSize.width = 1000
-dir_light.shadow.mapSize.height = 1000
-dir_light.castShadow = true;
+// lights.makeHemisphereLight(scene)
+lights.makeAmbientLight(scene)
 
-scene.add(dir_light);
-scene.add(dir_light.target);
+let lamppost = new Lamppost()
 
-const spot_color = 0xFFFFFF;
-const spot_intensity = 2;
-const spot_distance = 30
-const spot_angle = 60
-const spot_penumbra = 0
+lamppost.make(scene)
 
-const spot_light = new THREE.SpotLight(spot_color, spot_intensity, spot_distance, spot_angle, spot_penumbra);
+let footpath = new Footpath()
 
-spot_light.position.set(2, 20, 0)
-spot_light.caseShadow = true;
-spot_light.shadow.mapSize.width = 200
-spot_light.shadow.mapSize.height = 300
-
-spot_light.shadow.camera.near = 1
-spot_light.shadow.camera.far = 1
-
-scene.add(spot_light);
-
-const hemi_light = new THREE.HemisphereLight(0xffffff, 0xaaaaaa, 0.9);
-
-scene.add(hemi_light)
+footpath.make(scene)
 
 let ground = new Ground()
 ground.make(scene)

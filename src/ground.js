@@ -3,20 +3,21 @@ export default class Ground
 	constructor()
 	{
 		this.length = 1000;
-		this.height = 20;
+		this.width = 12;
 		this.object;
+		this.texture_path = 'resources/textures/road.jpg'
 	}
 
 	make(scene)
 	{
 		const texture_loader = new THREE.TextureLoader()
 
-		texture_loader.load('resources/textures/road.jpg', (texture) => {
+		texture_loader.load(this.texture_path, (texture) => {
 			texture.encoding = THREE.sRGBEncoding;
 			texture.wrapS = texture.wrapT = THREE.RepeatWrapping
 			texture.repeat.set(this.length / 10, 1)
 
-			const geometry = new THREE.PlaneGeometry(this.length, this.height, 5, 5)
+			const geometry = new THREE.PlaneGeometry(this.length, this.width, 5, 5)
 
 			const material = new THREE.MeshPhongMaterial({
 				map: texture
