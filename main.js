@@ -4,6 +4,7 @@ import { getDistance } from './src/utils.js'
 import Sound from './src/sound.js'
 import Wall from './src/wall.js'
 import Ground from './src/ground.js'
+import Score from './src/score.js'
 
 const scene = new THREE.Scene();
 
@@ -218,6 +219,7 @@ let wall = new Wall()
 
 wall.make(scene)
 
+let score = new Score();
 
 function animate()
 {
@@ -231,6 +233,7 @@ function animate()
 	if(!game_over && game_started)
 	{
 		motionEnemies();
+		score.increasePoints()
 	}
 
 	renderer.render(scene, camera);
@@ -276,6 +279,8 @@ document.getElementById('retry_button').addEventListener('click', function(e)
 	document.getElementById('game_over').style.visibility = 'hidden'
 
 	sound.playBackground1Audio()
+
+	score.reset()
 })
 
 document.getElementById('start_game_button').addEventListener('click', function(e)
@@ -285,6 +290,7 @@ document.getElementById('start_game_button').addEventListener('click', function(
 	document.getElementById('start_menu').style.display = 'none'
 	document.getElementById('background_overlay').style.display = 'none'
 	document.getElementById('jump_button').style.display = 'block'
+	document.getElementById('score_wrapper').style.visibility = 'visible'
 
 	sound.playBackground1Audio()
 })

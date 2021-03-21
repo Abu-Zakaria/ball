@@ -23,13 +23,16 @@
 			position: fixed;
 			bottom: 30%;
 			right: 10px;
-			min-width: 1%;
 			padding: 15px;
 			border: 0px solid red;
-			background: black;
 			color: white;
 			outline: none;
-			border-radius: 5px;
+			color: black;
+			font-family: 'Press Start 2P', cursive;
+		    border-radius: 50%;
+		    height: 80px;
+		    width: 80px;
+		    background: rgba(255, 255, 255, 0.5);
 		}
 
 		#game_over
@@ -40,16 +43,15 @@
 		    border: 0px solid #ddd;
 		    border-radius: 10px;
 		    width: 233px;
-		    height: 140px;
+		    height: 160px;
 		    padding: 0px;
 		    text-align: center;
 		    top: 50%;
 		    left: 50%;
-		    margin-top: -70px;
+		    margin-top: -80px;
 		    margin-left: -116px;
 		    color: white;
 		    box-shadow: 0px 0px 69px 6px #777;
-		    font-family: 'Press Start 2P', cursive;
 		}
 
 		#game_over button
@@ -62,7 +64,12 @@
 		    font-weight: bold;
 		    color: #14b405;
 		    margin-top: 20px;
-			font-family: 'Major Mono Display', monospace;
+			font-family: 'Press Start 2P', monospace;
+		}
+
+		#game_over .score-points
+		{
+			font-size: 11px;
 		}
 
 		#start_menu
@@ -158,6 +165,21 @@
 				margin-left: -100px;
 			}
 		}
+
+		#score_wrapper
+		{
+			visibility: hidden;
+			position: fixed;
+			top: 10px; 
+			left: 10px;
+			font-family: 'Press Start 2P', monospace;
+			color: white;
+		}
+
+		#score_points
+		{
+			font-size: 20px;
+		}
 	</style>
 </head>
 <body>
@@ -179,8 +201,13 @@
 
 	<div id="background_overlay"></div>
 
+	<div id="score_wrapper">
+		<p>Score: <span id="score_points">0</span></p>
+	</div>
+
 	<div id="game_over">
 		<h3>Game Over!</h3>
+		<p class="score-points">Score points: <span id="final_score"></span></p>
 		<button id="retry_button">Retry</button>
 	</div>
 
