@@ -1,27 +1,30 @@
 import { OrbitControls } from './lib/OrbitControls.js'
 import Enemy from './src/enemy.js'
 import { getDistance } from './src/utils.js'
+import Sound from './src/sound.js'
+import Wall from './src/wall.js'
+import Ground from './src/ground.js'
 
 const scene = new THREE.Scene();
 
-scene.background = 0xffffff;
+// scene.background = 0x54d1ff;
 
 
 const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, .1, 1500);
 
 const camera_y_pos = 6
 camera.position.y = camera_y_pos;
-camera.position.x = -4;
+camera.position.x = -10;
 camera.position.z = 6;
 
 camera.lookAt(0, 0, 0);
-
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = true;
+renderer.setPixelRatio(window.devicePixelRatio)
 
 
 document.getElementById('playground').appendChild(renderer.domElement);
@@ -77,55 +80,21 @@ const hemi_light = new THREE.HemisphereLight(0xffffff, 0xaaaaaa, 0.9);
 
 scene.add(hemi_light)
 
+let ground = new Ground()
+ground.make(scene)
 
-const groundGeo = new THREE.PlaneGeometry( 1000, 20, 5, 5);
-const groundMat = new THREE.MeshStandardMaterial( { color: 0xaaaaaa} );
-
-const ground = new THREE.Mesh( groundGeo, groundMat );
-
-ground.position.y = -0.5;
-ground.rotation.x = - Math.PI / 2;
-ground.castShadow = false;
-ground.receiveShadow = true;
-
-ground.name = 'ground';
-
-scene.add( ground );
-
-
-
-const player_movement_speed = 0.1;
-
-document.addEventListener('keydown', (event) => {
-	let key_code = event.keyCode
-	switch(key_code)
-	{
-		// case 38: // up arrow
-		// 	player_object.position.y += player_movement_speed;
-		// 	break;
-		// case 40: // down
-		// 	player_object.position.y -= player_movement_speed;
-		// 	break;
-		// case 39: // right
-		// 	player_object.position.x += player_movement_speed;
-		// 	console.log("going right")
-		// 	break;
-		// case 37: // left
-		// 	player_object.position.x -= player_movement_speed;
-		// 	break;
-		case 32: // spacebar
-			jump(event)
-			break;
-	}
+document.getElementById('jump_button').addEventListener('mousedown', () => {
+	jump()
 })
 
-document.getElementById('jump_button').addEventListener('click', (event) => {
-	jump(event)
-})
+let sound = new Sound();
 
 let jumping,
 	a_y = 0.5,
 	v_y;
+
+let game_started = false
+let game_over = false
 
 function jump(e)
 {
@@ -137,6 +106,8 @@ function jump(e)
 	console.log("Jumping...");
 	v_y = 10;
 	jumping = true;
+
+	sound.playJump();
 }
 
 function motionJump()
@@ -157,6 +128,10 @@ function motionJump()
 	}
 }
 
+function start_game()
+{
+	game_started = true
+}
 
 let clock = new THREE.Clock()
 clock.start();
@@ -177,13 +152,18 @@ function addEnemies()
 }
 
 addEnemies()
-
-let game_over = false
+let bruh = 'bruh';
 
 function motionEnemies()
 {
+	if(game_over)
+	{
+		return false
+	}
+	console.log('bruh', bruh)
 	for (var i = 0; i < enemies.length; i++) {
 		let enemy = enemies[i]
+
 
 		enemy.check_status();
 
@@ -193,10 +173,7 @@ function motionEnemies()
 
 			if(enemy.hasCollided(player_object))
 			{
-				let game_over_modal = document.getElementById('game_over')
-				game_over_modal.style.display = 'block'
-
-				game_over = true
+				setOnGameOver();
 			}
 
 			if(enemy.getPosition().x < -10)
@@ -207,13 +184,51 @@ function motionEnemies()
 	}
 }
 
+const player_movement_speed = 0.1;
+
+document.addEventListener('keydown', (event) => {
+	let key_code = event.keyCode
+
+	if(!game_over)
+	{
+		switch(key_code)
+		{
+			// case 38: // up arrow
+			// 	player_object.position.y += player_movement_speed;
+			// 	break;
+			// case 40: // down
+			// 	player_object.position.y -= player_movement_speed;
+			// 	break;
+			// case 39: // right
+			// 	player_object.position.x += player_movement_speed;
+			// 	console.log("going right")
+			// 	break;
+			// case 37: // left
+			// 	player_object.position.x -= player_movement_speed;
+			// 	break;
+			case 32: // spacebar
+				jump(event)
+				break;
+		}
+	}
+})
+
+
+let wall = new Wall()
+
+wall.make(scene)
+
+
 function animate()
 {
 	requestAnimationFrame(animate);
 
-	motionJump()
+	if(game_started)
+	{
+		motionJump()
+	}
 
-	if(!game_over)
+	if(!game_over && game_started)
 	{
 		motionEnemies();
 	}
@@ -222,6 +237,18 @@ function animate()
 }
 
 animate();
+
+function setOnGameOver()
+{
+	let game_over_modal = document.getElementById('game_over')
+	game_over_modal.style.visibility = 'visible'
+
+	game_over = true
+
+	sound.stopBackground1Audio()
+	sound.playGameOver()
+	clock.stop()
+}
 
 document.getElementById('retry_button').addEventListener('click', function(e)
 {
@@ -234,8 +261,30 @@ document.getElementById('retry_button').addEventListener('click', function(e)
 
 	enemies = []
 
+	console.log(enemies)
+
 	addEnemies();
+
+	console.log(enemies)
+
 	game_over = false
 
-	document.getElementById('game_over').style.display = 'none'
+	bruh = 'oof'
+
+	clock.start()
+
+	document.getElementById('game_over').style.visibility = 'hidden'
+
+	sound.playBackground1Audio()
+})
+
+document.getElementById('start_game_button').addEventListener('click', function(e)
+{
+	start_game()
+
+	document.getElementById('start_menu').style.display = 'none'
+	document.getElementById('background_overlay').style.display = 'none'
+	document.getElementById('jump_button').style.display = 'block'
+
+	sound.playBackground1Audio()
 })

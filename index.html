@@ -5,17 +5,24 @@
 
 	<title>Dino - cynax</title>
 
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&family=Press+Start+2P&display=swap" rel="stylesheet">
+
 	<style type="text/css">
 		body
 		{
 			overflow: hidden;
+			margin: 0;
+			font-family: 'Major Mono Display', monospace;
 		}
 
 		#jump_button
 		{
+			display: none;
 			position: fixed;
-			bottom: 10px;
-			left: 48%;
+			bottom: 30%;
+			right: 10px;
 			min-width: 1%;
 			padding: 15px;
 			border: 0px solid red;
@@ -27,16 +34,129 @@
 
 		#game_over
 		{
-			display: none;
+			visibility: hidden;
+	        position: fixed;
+		    background: rgb(112 112 112 / 95%);
+		    border: 0px solid #ddd;
+		    border-radius: 10px;
+		    width: 233px;
+		    height: 140px;
+		    padding: 0px;
+		    text-align: center;
+		    top: 50%;
+		    left: 50%;
+		    margin-top: -70px;
+		    margin-left: -116px;
+		    color: white;
+		    box-shadow: 0px 0px 69px 6px #777;
+		    font-family: 'Press Start 2P', cursive;
+		}
+
+		#game_over button
+		{
+			outline: none;
+		    border: 0 solid red;
+		    background: rgb(255 255 255);
+		    padding: 10px 29px;
+		    border-radius: 10px;
+		    font-weight: bold;
+		    color: #14b405;
+		    margin-top: 20px;
+			font-family: 'Major Mono Display', monospace;
+		}
+
+		#start_menu
+		{
 			position: fixed;
-			background: rgba(255, 0, 0, 0.4);
-			border: 2px solid #ddd;
+			background: rgba(143, 143, 143, 0.95);
+			border: 1px solid #ddd;
 			border-radius: 10px;
-			left: 43%;
-			top: 46%;
-			width: 14%;
+			width: 380px;
+			height: 190px;
 			padding: 10px;
-			text-align: center
+			text-align: center;
+			top: 50%;
+			left: 50%;
+			margin-top: -60px;
+			margin-left: -190px;
+			z-index: 10;
+		}
+
+		#start_menu .header
+		{
+			font-size: 22px;
+		}
+
+		#start_game_button
+		{
+			position: relative;
+			outline: none;
+			border: 0 solid red;
+			border-radius: 30px;
+			padding: 10px 50px 10px 60px;
+			margin-left: -5px;
+			background: rgba(0,0,0, .2);
+			color: white;
+			font-weight: bold;
+			box-shadow: 0 0 6px rgb(255, 255, 255);
+			font-family: 'Major Mono Display', monospace;
+		}
+
+		#start_game_button:after
+		{
+			content: "";
+		    background: url(./resources/images/start_game.png);
+		    width: 34px;
+		    height: 34px;
+		    position: absolute;
+		    left: 0px;
+		    top: 0px;
+		    background-size: cover;
+		    background-repeat: no-repeat;
+		}
+
+		#background_overlay
+		{
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background: rgb(0, 0, 0, .1);
+			backdrop-filter: blur(2px);
+
+		}
+
+		#developed_by
+		{
+			font-size: 10px;
+			text-align: center;
+			margin-top: 40px;
+		}
+
+		@supports ((-webkit-backdrop-filter: blur(2px))
+			or (-moz-backdrop-filter: blur(2px))
+			or (-ms-backdrop-filter: blur(2px)))
+			or (-o-backdrop-filter: blur(2px))
+			or (backdrop-filter: blur(2px))
+		)
+		{
+			#background_overlay
+			{
+				-webkit-backdrop-filter: blur(2px);
+				backdrop-filter: blur(2px);
+			}
+		}
+
+		@media screen and (max-width: 480px)
+		{
+			#start_menu
+			{
+				width: 200px;
+				height: 230px;
+				margin-top: -97px;
+				margin-left: -100px;
+			}
 		}
 	</style>
 </head>
@@ -46,8 +166,21 @@
 
 	<button id="jump_button">Jump</button>
 
+	<div id="start_menu">
+		<p class="header">An Experimental Arcade Game</p>
+		<div>
+			<button id="start_game_button">Start</button>
+		</div>
+
+		<p id="developed_by">
+			<i>Developed by <a href="https://www.facebook.com/jakaria.blaine">Jakaria</a></i>
+		</p>
+	</div>
+
+	<div id="background_overlay"></div>
+
 	<div id="game_over">
-		<h2>Game Over!</h2>
+		<h3>Game Over!</h3>
 		<button id="retry_button">Retry</button>
 	</div>
 

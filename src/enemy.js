@@ -38,6 +38,8 @@ export default class Enemy
 
 		this.object = new THREE.Mesh(this.geometry, material)
 
+		this.object.name = "asd_" + this.clock.getElapsedTime();
+
 		this.object.position.x = this.spawn_point
 
 		return this.object
@@ -52,8 +54,10 @@ export default class Enemy
 	{
 		if(
 			(getDistance(this.object.position.x, this.object.position.y,
-								player.position.x, player.position.y) - this.radius) <= 0)
+								player.position.x, player.position.y) - (this.radius + 0.2)) <= 0)
 		{
+			console.log("Collision data: ", this.object.position.x, this.object.position.y,
+								player.position.x, player.position.y)
 			return true
 		}
 		return false
