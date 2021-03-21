@@ -10,6 +10,10 @@ const scene = new THREE.Scene();
 
 // scene.background = 0x54d1ff;
 
+const fogColor = 0x000000;
+
+scene.fog = new THREE.Fog(fogColor, 30, 170)
+
 
 const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, .1, 1500);
 
@@ -138,7 +142,7 @@ let clock = new THREE.Clock()
 clock.start();
 
 let enemies = [];
-let enemies_number = 20;
+let enemies_number = 5;
 
 function addEnemies()
 {
