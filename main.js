@@ -17,7 +17,7 @@ const scene = new THREE.Scene();
 
 // scene.background = 0x54d1ff;
 
-const fogColor = 0x222222;
+const fogColor = 0x000000;
 
 let fog_far = 100;
 let fog_near = 30;
@@ -47,7 +47,7 @@ document.getElementById('playground').appendChild(renderer.domElement);
 
 LoadingScreen.init()
 
-const orbitControl = new OrbitControls(camera, renderer.domElement)
+// const orbitControl = new OrbitControls(camera, renderer.domElement)
 
 let player = new Player(camera)
 player.make(scene)
