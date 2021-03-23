@@ -6,6 +6,7 @@ import { getDistance } from './src/utils.js'
 import Sound from './src/sound.js'
 import Wall from './src/wall.js'
 import Ground from './src/ground.js'
+import Sky from './src/sky.js'
 import Score from './src/score.js'
 import Lights from './src/lights.js'
 import Lamppost from './src/lamppost.js'
@@ -15,14 +16,14 @@ const scene = new THREE.Scene();
 
 // scene.background = 0x54d1ff;
 
-const fogColor = 0x000000;
+const fogColor = 0x222222;
 
 let fog_far = 100;
 let fog_near = 30;
 
 scene.fog = new THREE.Fog(fogColor, fog_near, fog_far)
 
-const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, .1, fog_far);
+const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, .1, fog_far + fog_near);
 
 const camera_pos = new THREE.Vector3(1, 2, 4);
 
@@ -65,6 +66,9 @@ footpath.make(scene)
 
 let ground = new Ground()
 ground.make(scene)
+
+// let sky = new Sky()
+// sky.make(scene)
 
 document.getElementById('jump_button').addEventListener('mousedown', () => {
 	player.jump()

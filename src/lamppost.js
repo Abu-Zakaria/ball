@@ -84,7 +84,7 @@ export default class Lamppost
 		{
 			let lamppost = this.lampposts[i]
 
-			if( lamppost.status == 0 && (lamppost.x - player_pos_x) < (far - near) )
+			if( lamppost.status == 0 && (lamppost.x - player_pos_x) < (far) )
 			{
 				lamppost.status = 1
 
