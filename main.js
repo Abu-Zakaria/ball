@@ -67,7 +67,7 @@ let ground = new Ground()
 ground.make(scene)
 
 document.getElementById('jump_button').addEventListener('mousedown', () => {
-	jump()
+	player.jump()
 })
 
 let sound = new Sound();
@@ -180,8 +180,8 @@ function animate()
 		player.run()
 		player.updateJump(camera, camera_pos)
 
-		lamppost.update(player.getPosition().x, fog_near, fog_far)
 	}
+	lamppost.update(player.getPosition().x, fog_near, fog_far)
 
 	if(!game_over && game_started)
 	{
@@ -246,4 +246,12 @@ document.getElementById('start_game_button').addEventListener('click', function(
 	document.getElementById('score_wrapper').style.visibility = 'visible'
 
 	sound.playBackground1Audio()
+})
+
+window.addEventListener('resize', function()
+{
+	camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+
+    renderer.setSize( window.innerWidth, window.innerHeight );
 })
