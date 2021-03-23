@@ -26,7 +26,7 @@ export default class Lights
 		scene.add(spot_light);
 	}
 
-	makeLamppostLight(scene, x, y, z)
+	makeLamppostLight(scene, x, y, z, name = '')
 	{
 		const spot_color = 0xfff30d;
 		const spot_intensity = 2;
@@ -41,6 +41,8 @@ export default class Lights
 
 		spot_light.position.set(x, y + y_offset, z + z_offset)
 		spot_light.caseShadow = true;
+
+		spot_light.name = name
 
 		let target = new THREE.Object3D()
 		target.position.x = x
@@ -59,6 +61,7 @@ export default class Lights
 		spot_light.shadow.camera.focus = 2
 
 		scene.add(spot_light);
+		return spot_light
 	}
 
 	makeHemisphereLight(scene)

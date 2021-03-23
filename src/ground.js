@@ -26,7 +26,7 @@ export default class Ground
 
 			this.object = new THREE.Mesh( geometry, material );
 
-			this.object.position.y = -0.5;
+			this.object.position.y = 0;
 			this.object.rotation.x = - Math.PI / 2;
 			this.object.castShadow = false;
 			this.object.receiveShadow = true;

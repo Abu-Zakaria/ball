@@ -27,30 +27,16 @@ export default class Wall
 			this.object = new THREE.Mesh(geometry, material);
 
 			this.object.position.z = - this.far_position;
-			this.object.position.y = (this.height / 2) - 0.5;
+			this.object.position.y = (this.height / 2);
+
+			let cloned = this.object.clone();
 
 			scene.add(this.object)
-		})
 
-		texture_loader.load('resources/textures/wall.jpg', (texture) => {
-			let geometry = new THREE.PlaneGeometry(this.length, this.height, 5, 5)
+			cloned.rotation.x = Math.PI
+			cloned.position.z = this.far_position;
 
-			texture.encoding = THREE.sRGBEncoding;
-			texture.wrapS = texture.wrapT = THREE.RepeatWrapping
-			texture.repeat.set(this.length / 10, 1)
-
-			let material = new THREE.MeshPhongMaterial({
-				map: texture
-			})
-
-			this.object = new THREE.Mesh(geometry, material);
-
-			this.object.position.z = this.far_position;
-			this.object.position.y = (this.height / 2) - 0.5;
-
-			this.object.rotation.x = Math.PI
-
-			scene.add(this.object)
+			scene.add(cloned)
 		})
 
 	}

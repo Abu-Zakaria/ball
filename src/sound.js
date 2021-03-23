@@ -3,10 +3,17 @@ export default class Sound
 	constructor()
 	{
 		this.path = '../resources/sounds/'
-		this.jump_audio = new Audio(this.path + 'jump.mp3')
 		this.gameover_audio = new Audio(this.path + 'game_over.mp3')
 		this.background_1_audio = new Audio(this.path + 'background_music_1.mp3')
+		
+		this.jump_audio
 	}
+
+	loadJump()
+	{
+		this.jump_audio = new Audio(this.path + 'jump.mp3')
+	}
+
 	playJump()
 	{
 		this.jump_audio.pause();

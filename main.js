@@ -1,5 +1,6 @@
 import { OrbitControls } from './lib/OrbitControls.js'
 
+import Player from './src/player.js'
 import Enemy from './src/enemy.js'
 import { getDistance } from './src/utils.js'
 import Sound from './src/sound.js'
@@ -16,15 +17,18 @@ const scene = new THREE.Scene();
 
 const fogColor = 0x000000;
 
-scene.fog = new THREE.Fog(fogColor, 30, 170)
+let fog_far = 100;
+let fog_near = 30;
 
+scene.fog = new THREE.Fog(fogColor, fog_near, fog_far)
 
-const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, .1, 1500);
+const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, .1, fog_far);
 
-const camera_y_pos = 6
-camera.position.y = camera_y_pos;
-camera.position.x = -10;
-camera.position.z = 6;
+const camera_pos = new THREE.Vector3(1, 2, 4);
+
+camera.position.x = camera_pos.x;
+camera.position.y = camera_pos.y;
+camera.position.z = camera_pos.z;
 
 camera.lookAt(0, 0, 0);
 
@@ -41,18 +45,8 @@ document.getElementById('playground').appendChild(renderer.domElement);
 
 const orbitControl = new OrbitControls(camera, renderer.domElement)
 
-// player object
-const player_geometry = new THREE.SphereGeometry(0.7, 100, 100);
-const player_material = new THREE.MeshPhongMaterial({ color: 0x00ffff});
-
-const player_object = new THREE.Mesh(player_geometry, player_material)
-
-player_object.position.y = 0.2;
-player_object.castShadow = true;
-
-player_object.name = 'player'
-
-scene.add(player_object)
+let player = new Player(camera)
+player.make(scene)
 
 let lights = new Lights()
 
@@ -63,7 +57,7 @@ lights.makeAmbientLight(scene)
 
 let lamppost = new Lamppost()
 
-lamppost.make(scene)
+lamppost.init(scene)
 
 let footpath = new Footpath()
 
@@ -85,38 +79,6 @@ let jumping,
 let game_started = false
 let game_over = false
 
-function jump(e)
-{
-	if(jumping)
-	{
-		e.preventDefault()
-		return;
-	}
-	console.log("Jumping...");
-	v_y = 10;
-	jumping = true;
-
-	sound.playJump();
-}
-
-function motionJump()
-{
-	if(jumping)
-	{
-		let dif = (v_y - a_y) / 30
-		if(player_object.position.y + dif <= 0)
-		{
-			player_object.position.y = 0;
-			camera.position.y = camera_y_pos
-			jumping = false
-			return
-		}
-		player_object.position.y += dif;
-		camera.position.y += dif / 2
-		v_y -= a_y;
-	}
-}
-
 function start_game()
 {
 	game_started = true
@@ -125,22 +87,22 @@ function start_game()
 let clock = new THREE.Clock()
 clock.start();
 
-let enemies = [];
-let enemies_number = 100;
+// let enemies = [];
+// let enemies_number = 100;
 
-function addEnemies()
-{
-	console.log("Adding....")
-	for (var i = 0; i < enemies_number; i++)
-	{
-		let enemy_obj = new Enemy(scene, clock);
-		enemy_obj.makeBox();
+// function addEnemies()
+// {
+// 	console.log("Adding....")
+// 	for (var i = 0; i < enemies_number; i++)
+// 	{
+// 		let enemy_obj = new Enemy(scene, clock);
+// 		enemy_obj.makeBox();
 
-		enemies.push(enemy_obj)
-	}
-}
+// 		enemies.push(enemy_obj)
+// 	}
+// }
 
-addEnemies()
+// addEnemies()
 let bruh = 'bruh';
 
 function motionEnemies()
@@ -173,7 +135,7 @@ function motionEnemies()
 	}
 }
 
-const player_movement_speed = 0.1;
+// const player_movement_speed = 0.1;
 
 document.addEventListener('keydown', (event) => {
 	let key_code = event.keyCode
@@ -196,7 +158,7 @@ document.addEventListener('keydown', (event) => {
 			// 	player_object.position.x -= player_movement_speed;
 			// 	break;
 			case 32: // spacebar
-				jump(event)
+				player.jump()
 				break;
 		}
 	}
@@ -215,12 +177,15 @@ function animate()
 
 	if(game_started)
 	{
-		motionJump()
+		player.run()
+		player.updateJump(camera, camera_pos)
+
+		lamppost.update(player.getPosition().x, fog_near, fog_far)
 	}
 
 	if(!game_over && game_started)
 	{
-		motionEnemies();
+		// motionEnemies();
 		score.increasePoints()
 	}
 

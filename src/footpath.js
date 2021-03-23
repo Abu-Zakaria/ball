@@ -28,7 +28,7 @@ export default class Footpath
 
 			this.object = new THREE.Mesh( geometry, material );
 
-			this.object.position.y = -0.5;
+			this.object.position.y = 0;
 			this.object.position.z = - this.far_position
 
 			this.object.rotation.x = - Math.PI / 2;
@@ -36,8 +36,13 @@ export default class Footpath
 			this.object.castShadow = false;
 			this.object.receiveShadow = true;
 
+			let cloned = this.object.clone();
 
 			scene.add(this.object)
+
+			cloned.position.z = this.far_position
+
+			scene.add(cloned)
 		})
 
 		texture_loader.load(this.texture_path, (texture) => {
@@ -55,7 +60,6 @@ export default class Footpath
 
 			this.object = new THREE.Mesh( geometry, material );
 
-			this.object.position.y = -0.5;
 			this.object.position.z = this.far_position
 
 			this.object.rotation.x = - Math.PI / 2;
