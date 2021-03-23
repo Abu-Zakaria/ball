@@ -44,7 +44,7 @@ renderer.outputEncoding = THREE.sRGBEncoding
 
 document.getElementById('playground').appendChild(renderer.domElement);
 
-const orbitControl = new OrbitControls(camera, renderer.domElement)
+// const orbitControl = new OrbitControls(camera, renderer.domElement)
 
 let player = new Player(camera)
 player.make(scene)
