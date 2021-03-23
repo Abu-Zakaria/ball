@@ -9,6 +9,8 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 	<link href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&family=Press+Start+2P&display=swap" rel="stylesheet">
 
+	<link rel="stylesheet" type="text/css" href="./lib/loading-bar/loading-bar.css">
+
 	<style type="text/css">
 		body
 		{
@@ -80,12 +82,12 @@
 			border: 1px solid #ddd;
 			border-radius: 10px;
 			width: 380px;
-			height: 190px;
+			height: 250px;
 			padding: 10px;
 			text-align: center;
 			top: 50%;
 			left: 50%;
-			margin-top: -60px;
+			margin-top: -125px;
 			margin-left: -190px;
 			z-index: 10;
 		}
@@ -95,19 +97,26 @@
 			font-size: 22px;
 		}
 
-		#start_game_button
+		#start_menu_buttons_wrapper
+		{
+			width: 200px;
+		    margin: auto;
+		}
+
+		#start_game_button, #settings_button
 		{
 			position: relative;
 			outline: none;
 			border: 0 solid red;
 			border-radius: 30px;
 			padding: 10px 50px 10px 60px;
-			margin-left: -5px;
+			margin-bottom: 5px;
 			background: rgba(0,0,0, .2);
 			color: white;
 			font-weight: bold;
 			box-shadow: 0 0 6px rgb(255, 255, 255);
 			font-family: 'Major Mono Display', monospace;
+			width: 100%;
 		}
 
 		#start_game_button:after
@@ -181,6 +190,28 @@
 		{
 			font-size: 20px;
 		}
+
+		#loading_screen_wrapper
+		{
+			background: black;
+			position: fixed;
+			z-index: 20;
+			padding: 10px;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			color: green;
+		    display: flex;
+		    align-items: center;
+		    justify-content: center;
+		    text-align: center;
+		}
+
+		#loading_screen
+		{
+			width: 300px;
+		}
 	</style>
 </head>
 <body>
@@ -191,8 +222,13 @@
 
 	<div id="start_menu">
 		<p class="header">An Experimental Arcade Game</p>
-		<div>
-			<button id="start_game_button">Start</button>
+		<div id="start_menu_buttons_wrapper">
+			<div>
+				<button id="start_game_button">Start</button>
+			</div>
+			<div>
+				<button id="settings_button">Settings</button>
+			</div>
 		</div>
 
 		<p id="developed_by">
@@ -212,6 +248,16 @@
 		<button id="retry_button">Retry</button>
 	</div>
 
+	<div id="loading_screen_wrapper">
+		<div id="loading_screen">
+			<h2>Loading...</h2>
+			<p>Please wait</p>
+			<div class="ldBar label-center" id="loading_progress" data-preset="fan" data-value="0" style="width: 100%; height: 80px">
+			</div>
+		</div>
+	</div>
+
+	<script src="./lib/loading-bar/loading-bar.js"></script>
 	<script src="./lib/three.js"></script>
 	<script src="./lib/SkeletonUtils.js"></script>
 

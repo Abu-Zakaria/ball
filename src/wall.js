@@ -1,3 +1,5 @@
+import LoadingScreen from './loadingScreen.js'
+
 export default class Wall
 {
 	constructor()
@@ -14,6 +16,7 @@ export default class Wall
 		const texture_loader = new THREE.TextureLoader()
 
 		texture_loader.load('resources/textures/wall.jpg', (texture) => {
+			LoadingScreen.loadingCompleted("texture_wall")
 			let geometry = new THREE.PlaneGeometry(this.length, this.height, 5, 5)
 
 			texture.encoding = THREE.sRGBEncoding;

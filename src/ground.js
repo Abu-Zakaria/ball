@@ -1,3 +1,5 @@
+import LoadingScreen from './loadingScreen.js'
+
 export default class Ground
 {
 	constructor()
@@ -13,6 +15,7 @@ export default class Ground
 		const texture_loader = new THREE.TextureLoader()
 
 		texture_loader.load(this.texture_path, (texture) => {
+			LoadingScreen.loadingCompleted("texture_ground")
 			texture.encoding = THREE.sRGBEncoding;
 			texture.wrapS = texture.wrapT = THREE.RepeatWrapping
 			texture.repeat.set(this.length / 10, 1)

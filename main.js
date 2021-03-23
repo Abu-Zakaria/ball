@@ -11,6 +11,7 @@ import Score from './src/score.js'
 import Lights from './src/lights.js'
 import Lamppost from './src/lamppost.js'
 import Footpath from './src/footpath.js'
+import LoadingScreen from './src/loadingScreen.js'
 
 const scene = new THREE.Scene();
 
@@ -43,6 +44,8 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.outputEncoding = THREE.sRGBEncoding
 
 document.getElementById('playground').appendChild(renderer.domElement);
+
+LoadingScreen.init()
 
 const orbitControl = new OrbitControls(camera, renderer.domElement)
 
@@ -191,6 +194,11 @@ function animate()
 	{
 		// motionEnemies();
 		score.increasePoints()
+	}
+
+	if(LoadingScreen.progress < 100)
+	{
+		LoadingScreen.update()
 	}
 
 	renderer.render(scene, camera);

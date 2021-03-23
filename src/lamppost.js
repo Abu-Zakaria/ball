@@ -1,5 +1,6 @@
 import { GLTFLoader } from '../lib/GLTFLoader.js'
 import Lights from './lights.js'
+import LoadingScreen from './loadingScreen.js'
 
 
 export default class Lamppost
@@ -22,6 +23,8 @@ export default class Lamppost
 		const gltf_loader = new GLTFLoader()
 
 		gltf_loader.load('./resources/models/lamppost/scene.gltf', (gltf) => {
+			LoadingScreen.loadingCompleted("texture_lamppost")
+
 			let working_item = gltf.scene
 			let next_item
 
