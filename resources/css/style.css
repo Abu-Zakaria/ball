@@ -1,0 +1,260 @@
+body
+{
+	overflow: hidden;
+	margin: 0;
+	font-family: 'Major Mono Display', monospace;
+}
+
+#jump_button
+{
+	display: none;
+	position: fixed;
+	bottom: 30%;
+	right: 10px;
+	padding: 15px;
+	border: 0px solid red;
+	color: white;
+	outline: none;
+	color: black;
+	font-family: 'Press Start 2P', cursive;
+    border-radius: 50%;
+    height: 80px;
+    width: 80px;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+#game_over
+{
+	visibility: hidden;
+    position: fixed;
+    background: rgb(112 112 112 / 95%);
+    border: 0px solid #ddd;
+    border-radius: 10px;
+    width: 233px;
+    height: 160px;
+    padding: 0px;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    margin-top: -80px;
+    margin-left: -116px;
+    color: white;
+    box-shadow: 0px 0px 69px 6px #777;
+	font-family: 'Press Start 2P', cursive;
+}
+
+#game_over button
+{
+	outline: none;
+    border: 0 solid red;
+    background: rgb(255 255 255);
+    padding: 10px 29px;
+    border-radius: 10px;
+    font-weight: bold;
+    color: #14b405;
+    margin-top: 20px;
+	font-family: 'Press Start 2P', monospace;
+}
+
+#game_over .score-points
+{
+	font-size: 11px;
+}
+
+#start_menu
+{
+	position: fixed;
+	background: rgba(143, 143, 143, 0.95);
+	border: 1px solid #ddd;
+	border-radius: 10px;
+	width: 380px;
+	height: 250px;
+	padding: 10px;
+	text-align: center;
+	top: 50%;
+	left: 50%;
+	margin-top: -125px;
+	margin-left: -190px;
+	z-index: 10;
+}
+
+#start_menu .header
+{
+	font-size: 22px;
+}
+
+#start_menu_buttons_wrapper
+{
+	width: 200px;
+    margin: auto;
+}
+
+#start_game_button, #settings_button
+{
+	position: relative;
+	outline: none;
+	border: 0 solid red;
+	border-radius: 30px;
+	padding: 10px 50px 10px 60px;
+	background: rgba(0,0,0, .2);
+	color: white;
+	font-weight: bold;
+	box-shadow: 0 0 6px rgb(255, 255, 255);
+	font-family: 'Major Mono Display', monospace;
+	width: 100%;
+}
+
+#settings_button
+{
+	margin-top: 15px;
+}
+
+#start_game_button:after
+{
+	content: "";
+    background: url(../images/start_game.png);
+    width: 33px;
+    height: 33px;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+#settings_button:after
+{
+	content: "";
+    background: url(../images/settings.png);
+    width: 33px;
+    height: 33px;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+#background_overlay
+{
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgb(0, 0, 0, .1);
+	backdrop-filter: blur(2px);
+
+}
+
+#developed_by
+{
+	font-size: 10px;
+	text-align: center;
+	margin-top: 40px;
+}
+
+@supports ((-webkit-backdrop-filter: blur(2px))
+	or (-moz-backdrop-filter: blur(2px))
+	or (-ms-backdrop-filter: blur(2px)))
+	or (-o-backdrop-filter: blur(2px))
+	or (backdrop-filter: blur(2px))
+)
+{
+	#background_overlay
+	{
+		-webkit-backdrop-filter: blur(2px);
+		backdrop-filter: blur(2px);
+	}
+}
+
+@media screen and (max-width: 480px)
+{
+	#start_menu
+	{
+		width: 200px;
+		height: 230px;
+		margin-top: -97px;
+		margin-left: -100px;
+	}
+}
+
+#score_wrapper
+{
+	visibility: hidden;
+	position: fixed;
+	top: 10px; 
+	left: 10px;
+	font-family: 'Press Start 2P', monospace;
+	color: white;
+}
+
+#score_points
+{
+	font-size: 20px;
+}
+
+#loading_screen_wrapper
+{
+	background: black;
+	position: fixed;
+	z-index: 20;
+	padding: 10px;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	color: green;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+#loading_screen
+{
+	width: 300px;
+}
+
+#settings_screen_wrapper
+{
+	background: black;
+	position: fixed;
+	z-index: 20;
+	padding: 10px;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	color: green;
+    display: flex;
+    align-items: center;
+    display: none
+}
+
+#settings_screen
+{
+	width: 332px;
+    margin: 0 auto;
+}
+
+#settings_screen label
+{
+	font-weight: bold;
+}
+
+#settings_screen select
+{
+	margin: 10px 0;
+    width: 100%;
+    padding: 10px;
+}
+
+#setting_done_button
+{
+	border: 2px solid green;
+	background: transparent;
+	padding: 10px 20px;
+	color: green;
+	float: right;
+}

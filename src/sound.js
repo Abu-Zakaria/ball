@@ -1,3 +1,5 @@
+import LoadingScreen from './loadingScreen.js'
+
 export default class Sound
 {
 	constructor()
@@ -7,6 +9,8 @@ export default class Sound
 		this.background_1_audio = new Audio(this.path + 'background_music_1.mp3')
 		
 		this.jump_audio
+
+		LoadingScreen.loadingCompleted("audio")
 	}
 
 	loadJump()

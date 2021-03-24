@@ -20,6 +20,10 @@ class LoadingScreen
 			{
 				name: "texture_ground",
 				loaded: false
+			},
+			{
+				name: "audio",
+				loaded: false
 			}
 		]
 	}
@@ -59,7 +63,6 @@ class LoadingScreen
 		let key = null;
 
 		this.resources.forEach((resource, k) => {
-			console.log('resource', resource)
 			if(resource.name == key_name)
 			{
 				key = k

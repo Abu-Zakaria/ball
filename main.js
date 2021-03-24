@@ -12,6 +12,8 @@ import Lights from './src/lights.js'
 import Lamppost from './src/lamppost.js'
 import Footpath from './src/footpath.js'
 import LoadingScreen from './src/loadingScreen.js'
+import Renderer from './src/renderer.js'
+import Settings from './src/settings.js'
 
 const scene = new THREE.Scene();
 
@@ -34,18 +36,11 @@ camera.position.z = camera_pos.z;
 
 camera.lookAt(0, 0, 0);
 
-const renderer = new THREE.WebGLRenderer({ antialias: true });
-
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = true;
-// console.log()
-// renderer.setPixelRatio(window.devicePixelRatio)
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.outputEncoding = THREE.sRGBEncoding
-
-document.getElementById('playground').appendChild(renderer.domElement);
+let renderer = new Renderer()
 
 LoadingScreen.init()
+
+let settings = new Settings()
 
 // const orbitControl = new OrbitControls(camera, renderer.domElement)
 
@@ -201,7 +196,7 @@ function animate()
 		LoadingScreen.update()
 	}
 
-	renderer.render(scene, camera);
+	renderer.getRenderer().render(scene, camera);
 }
 
 animate();
@@ -265,5 +260,5 @@ window.addEventListener('resize', function()
 	camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
 
-    renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.getRenderer().setSize( window.innerWidth, window.innerHeight );
 })

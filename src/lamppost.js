@@ -91,14 +91,11 @@ export default class Lamppost
 			{
 				lamppost.status = 1
 
-				console.log("Adding lamppost");
 				this.addLamppost(lamppost)
-				console.log("Test")
 			}
 			else if(lamppost.status == 1 && player_pos_x - lamppost.x > 30)
 			{
 				lamppost.status = 2
-				console.log("removing")
 				this.removeLamppost(lamppost.scene)
 			}
 		}
@@ -122,7 +119,6 @@ export default class Lamppost
 
 				vm.scene.add(lamppost.scene)
 
-				console.log("Added lamppost")
 				resolve()
 			})
 		}
@@ -144,7 +140,6 @@ export default class Lamppost
 				vm.scene.remove(light_object)
 				vm.scene.remove(lamppost)
 
-				console.log("removed")
 				resolve()
 			})
 		}
