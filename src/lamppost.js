@@ -15,6 +15,9 @@ export default class Lamppost
 		this.lights
 
 		this.lampposts = []
+		document.addEventListener('gfx_changed', () => {
+			LoadingScreen.loadingCompleted("texture_lamppost")
+		})
 	}
 
 	init(scene)

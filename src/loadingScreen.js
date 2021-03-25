@@ -2,6 +2,7 @@ class LoadingScreen
 {
 	static init()
 	{
+		document.getElementById('loading_screen_wrapper').style.visibility = 'visible'
 		this.progress = 0
 		this.bar = new ldBar('#loading_progress', {})
 		this.resources = [
@@ -53,7 +54,7 @@ class LoadingScreen
 		if(progress == 100)
 		{
 			setTimeout(() => {
-				document.getElementById('loading_screen_wrapper').style.display = 'none'
+				document.getElementById('loading_screen_wrapper').style.visibility = 'hidden'
 			}, 1000)
 		}
 	}

@@ -14,6 +14,8 @@ import Footpath from './src/footpath.js'
 import LoadingScreen from './src/loadingScreen.js'
 import Renderer from './src/renderer.js'
 import Settings from './src/settings.js'
+import Camera from './src/camera.js'
+import Boss from './src/boss.js'
 
 const scene = new THREE.Scene();
 
@@ -26,15 +28,9 @@ let fog_near = 30;
 
 scene.fog = new THREE.Fog(fogColor, fog_near, fog_far)
 
-const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, .1, fog_far + fog_near);
-
-const camera_pos = new THREE.Vector3(1, 2, 4);
-
-camera.position.x = camera_pos.x;
-camera.position.y = camera_pos.y;
-camera.position.z = camera_pos.z;
-
-camera.lookAt(0, 0, 0);
+let camera_obj = new Camera(fog_far, fog_near)
+let camera = camera_obj.init()
+let camera_pos = camera_obj.getCameraPosition()
 
 let renderer = new Renderer()
 
@@ -42,10 +38,10 @@ LoadingScreen.init()
 
 let settings = new Settings()
 
-// const orbitControl = new OrbitControls(camera, renderer.domElement)
+const orbitControl = new OrbitControls(camera, renderer.getRenderer().domElement)
 
-let player = new Player(camera)
-player.make(scene)
+let player = new Player(scene, camera)
+player.make()
 
 let lights = new Lights()
 
@@ -62,15 +58,11 @@ let footpath = new Footpath()
 
 footpath.make(scene)
 
-let ground = new Ground()
-ground.make(scene)
+let ground = new Ground(scene)
+ground.make()
 
 // let sky = new Sky()
 // sky.make(scene)
-
-document.getElementById('jump_button').addEventListener('mousedown', () => {
-	player.jump()
-})
 
 let sound = new Sound();
 
@@ -139,37 +131,9 @@ function motionEnemies()
 
 // const player_movement_speed = 0.1;
 
-document.addEventListener('keydown', (event) => {
-	let key_code = event.keyCode
+let wall = new Wall(scene)
 
-	if(!game_over)
-	{
-		switch(key_code)
-		{
-			// case 38: // up arrow
-			// 	player_object.position.y += player_movement_speed;
-			// 	break;
-			// case 40: // down
-			// 	player_object.position.y -= player_movement_speed;
-			// 	break;
-			// case 39: // right
-			// 	player_object.position.x += player_movement_speed;
-			// 	console.log("going right")
-			// 	break;
-			// case 37: // left
-			// 	player_object.position.x -= player_movement_speed;
-			// 	break;
-			case 32: // spacebar
-				player.jump()
-				break;
-		}
-	}
-})
-
-
-let wall = new Wall()
-
-wall.make(scene)
+wall.make()
 
 let score = new Score();
 
@@ -179,10 +143,17 @@ function animate()
 
 	if(game_started)
 	{
-		player.run()
 		player.updateJump(camera, camera_pos)
-
 	}
+	if(game_started && !Boss.summoned)
+	{
+		player.run()
+	}
+	if(Boss.fighting)
+	{
+		boss.update()
+	}
+
 	lamppost.update(player.getPosition().x, fog_near, fog_far)
 
 	if(!game_over && game_started)
@@ -261,4 +232,34 @@ window.addEventListener('resize', function()
     camera.updateProjectionMatrix();
 
     renderer.getRenderer().setSize( window.innerWidth, window.innerHeight );
+})
+
+document.getElementById('jump_button').addEventListener('mousedown', () => {
+	player.jump()
+})
+document.addEventListener('keydown', (event) => {
+	let key_code = event.keyCode
+
+	if(!game_over)
+	{
+		switch(key_code)
+		{
+			// case 38: // up arrow
+			// 	player_object.position.y += player_movement_speed;
+			// 	break;
+			// case 40: // down
+			// 	player_object.position.y -= player_movement_speed;
+			// 	break;
+			// case 39: // right
+			// 	player_object.position.x += player_movement_speed;
+			// 	console.log("going right")
+			// 	break;
+			// case 37: // left
+			// 	player_object.position.x -= player_movement_speed;
+			// 	break;
+			case 32: // spacebar
+				player.jump()
+				break;
+		}
+	}
 })

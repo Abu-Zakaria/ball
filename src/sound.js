@@ -11,6 +11,10 @@ export default class Sound
 		this.jump_audio
 
 		LoadingScreen.loadingCompleted("audio")
+
+		document.addEventListener('gfx_changed', () => {
+			LoadingScreen.loadingCompleted("audio")
+		})
 	}
 
 	loadJump()

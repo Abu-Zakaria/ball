@@ -9,6 +9,10 @@ export default class Footpath
 		this.length = 1000;
 		this.width = 2
 		this.object;
+
+		document.addEventListener('gfx_changed', () => {
+			LoadingScreen.loadingCompleted("texture_footpath")
+		})
 	}
 
 	make(scene)

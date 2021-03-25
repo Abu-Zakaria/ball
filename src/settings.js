@@ -1,10 +1,9 @@
-export default class Settings
+import LoadingScreen from './loadingScreen.js'
+
+class Settings
 {
 	constructor()
 	{
-		this.gfx_quality = 'mid';
-		this.fps = 30;
-
 		this.setUpEvents()
 	}
 
@@ -20,9 +19,12 @@ export default class Settings
 		document.getElementById('settings_screen_wrapper').style.display = 'block'
 	}
 
-	updateGfxQuality(el)
+	updateGfxQuality()
 	{
-		this.gfx_quality = document.getElementById('graphics_quality').value
+		LoadingScreen.init()
+		Settings.gfx_quality = document.getElementById('graphics_quality').value
+		let event = new Event('gfx_changed')
+		document.dispatchEvent(event)
 	}
 
 	closeSettingsScreen()
@@ -30,3 +32,8 @@ export default class Settings
 		document.getElementById('settings_screen_wrapper').style.display = 'none'
 	}
 }
+
+Settings.gfx_quality = 'high';
+Settings.fps = 30;
+
+export default Settings
