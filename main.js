@@ -225,7 +225,8 @@ document.getElementById('start_game_button').addEventListener('click', function(
 
 	document.getElementById('start_menu').style.display = 'none'
 	document.getElementById('background_overlay').style.display = 'none'
-	document.getElementById('jump_button').style.display = 'block'
+	document.getElementById('jump_button_1').style.display = 'block'
+	document.getElementById('jump_button_2').style.display = 'block'
 	document.getElementById('left_button').style.display = 'block'
 	document.getElementById('right_button').style.display = 'block'
 	document.getElementById('score_wrapper').style.visibility = 'visible'
@@ -241,7 +242,10 @@ window.addEventListener('resize', function()
     renderer.getRenderer().setSize( window.innerWidth, window.innerHeight );
 })
 
-document.getElementById('jump_button').addEventListener('mousedown', () => {
+document.getElementById('jump_button_1').addEventListener('mousedown', () => {
+	player.jump()
+})
+document.getElementById('jump_button_2').addEventListener('mousedown', () => {
 	player.jump()
 })
 document.getElementById('right_button').addEventListener('mousedown', () => {
