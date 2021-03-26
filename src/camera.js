@@ -9,8 +9,8 @@ export default class Camera
 		this.fog_near = fog_near
 		let _this = this
 
-		this.camera = new THREE.PerspectiveCamera(60, this.aspect_ratio, .1, this.fog_far + this.fog_near);
-		
+		this.camera = new THREE.PerspectiveCamera(75, this.aspect_ratio, .1, this.fog_far + this.fog_near);
+
 		document.addEventListener('game_reset', function()
 		{
 			_this.init()
