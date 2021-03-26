@@ -37,7 +37,7 @@ LoadingScreen.init()
 
 let settings = new Settings()
 
-const orbitControl = new OrbitControls(camera, renderer.getRenderer().domElement)
+// const orbitControl = new OrbitControls(camera, renderer.getRenderer().domElement)
 
 let player = new Player(scene, camera)
 player.make()
