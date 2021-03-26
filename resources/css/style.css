@@ -5,12 +5,10 @@ body
 	font-family: 'Major Mono Display', monospace;
 }
 
-#jump_button
+#jump_button, #left_button, #right_button
 {
 	display: none;
 	position: fixed;
-	bottom: 30%;
-	right: 10px;
 	padding: 15px;
 	border: 0px solid red;
 	color: white;
@@ -21,6 +19,24 @@ body
     height: 80px;
     width: 80px;
     background: rgba(255, 255, 255, 0.5);
+}
+
+#jump_button
+{
+	bottom: 30%;
+	right: 10px;
+}
+
+#left_button
+{
+	bottom: 15%;
+	left: 10px
+}
+
+#right_button
+{
+	bottom: 15%;
+	right: 10px
 }
 
 #game_over

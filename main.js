@@ -226,6 +226,8 @@ document.getElementById('start_game_button').addEventListener('click', function(
 	document.getElementById('start_menu').style.display = 'none'
 	document.getElementById('background_overlay').style.display = 'none'
 	document.getElementById('jump_button').style.display = 'block'
+	document.getElementById('left_button').style.display = 'block'
+	document.getElementById('right_button').style.display = 'block'
 	document.getElementById('score_wrapper').style.visibility = 'visible'
 
 	sound.playBackground1Audio()
@@ -242,6 +244,12 @@ window.addEventListener('resize', function()
 document.getElementById('jump_button').addEventListener('mousedown', () => {
 	player.jump()
 })
+document.getElementById('right_button').addEventListener('mousedown', () => {
+	player.goRight()
+})
+document.getElementById('left_button').addEventListener('mousedown', () => {
+	player.goLeft()
+})
 document.addEventListener('keydown', (event) => {
 	let key_code = event.keyCode
 
@@ -249,9 +257,9 @@ document.addEventListener('keydown', (event) => {
 	{
 		switch(key_code)
 		{
-			// case 38: // up arrow
-			// 	player_object.position.y += player_movement_speed;
-			// 	break;
+			case 38: // up arrow
+				player.jump()
+				break;
 			// case 40: // down
 			// 	player_object.position.y -= player_movement_speed;
 			// 	break;
