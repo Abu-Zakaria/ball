@@ -2,7 +2,7 @@ import Sound from './sound.js'
 import Settings from './settings.js'
 import Boss from './boss.js'
 
-export default class Player
+class Player
 {
 	constructor(scene, camera)
 	{
@@ -21,12 +21,24 @@ export default class Player
 
 		this.speed = 0.1;
 		this.lookAhead = 0.1
+		this.boss
+
+		this.right_path_coord = 2
+		this.left_path_coord = -2
+		this.going_right_path = false
+		this.going_left_path = false
 
 		let _this = this
 		document.addEventListener('gfx_changed', function()
 		{
 			_this.destroy()
 			_this.make()
+		})
+
+		document.addEventListener('game_reset', function()
+		{
+			_this.destroy()
+			Player.dead = false
 		})
 	}
 
@@ -84,6 +96,72 @@ export default class Player
 		this.sound.playJump();
 	}
 
+	goRight()
+	{
+		if(this.going_left_path)
+		{
+			return;
+		}
+		if(this.player.position.z <= this.right_path_coord)
+		{
+			this.going_right_path = true
+		}
+	}
+
+	goLeft()
+	{
+		if(this.going_right_path)
+		{
+			return;
+		}
+		if(this.player.position.z >= this.left_path_coord)
+		{
+			this.going_left_path = true
+		}
+	}
+
+	jumpRightPath()
+	{
+		if(this.player.position.z < 0)
+		{
+			this.player.position.z += this.speed
+			if(this.player.position.z >= 0)
+			{
+				this.going_right_path = false
+				this.player.position.z = 0
+			}
+		}
+		else if(this.player.position.z >= 0 && this.player.position.z < (this.right_path_coord + this.speed))
+		{
+			this.player.position.z += this.speed
+			if(this.player.position.z >= this.right_path_coord)
+			{
+				this.going_right_path = false
+			}
+		}
+	}
+
+	jumpLeftPath()
+	{
+		if(this.player.position.z > 0)
+		{
+			this.player.position.z -= this.speed
+			if(this.player.position.z <= 0)
+			{
+				this.going_left_path = false
+				this.player.position.z = 0
+			}
+		}
+		else if(this.player.position.z <= 0 && this.player.position.z > (this.left_path_coord - this.speed))
+		{
+			this.player.position.z -= this.speed
+			if(this.player.position.z <= this.left_path_coord)
+			{
+				this.going_left_path = false
+			}
+		}
+	}
+
 	run()
 	{
 		this.player.position.x += this.speed
@@ -113,13 +191,21 @@ export default class Player
 				this.player.position.z
 			)
 
-		if(this.player.position.x > 60 && !Boss.summoned)
+		if(this.player.position.x > 20 && !Boss.summoned)
 		{
 			Boss.summoned = true
-			let boss = new Boss(this.scene)
-			boss.player_position.x = this.player.position.x
+			this.boss = new Boss(this.scene)
+			this.boss.player = this.player
 
-			boss.make()
+			this.boss.make()
+		}
+	}
+
+	facingBoss()
+	{
+		if(this.boss.boss_model)
+		{
+			this.boss.update()
 		}
 	}
 
@@ -149,5 +235,10 @@ export default class Player
 		this.player.geometry.dispose()
 		this.player.material.dispose()
 		this.scene.remove(this.player)
+		this.boss_model = null
 	}
 }
+
+Player.dead = false
+
+export default Player

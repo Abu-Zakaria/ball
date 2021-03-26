@@ -2,7 +2,6 @@ import { OrbitControls } from './lib/OrbitControls.js'
 
 import Player from './src/player.js'
 import Enemy from './src/enemy.js'
-import { getDistance } from './src/utils.js'
 import Sound from './src/sound.js'
 import Wall from './src/wall.js'
 import Ground from './src/ground.js'
@@ -149,9 +148,16 @@ function animate()
 	{
 		player.run()
 	}
-	if(Boss.fighting)
+
+	if(Boss.summoned && Boss.fighting)
 	{
-		boss.update()
+		player.facingBoss()
+		if(Player.dead)
+		{
+			Boss.fighting = false
+			console.log("GAME OVER")
+			setOnGameOver()
+		}
 	}
 
 	lamppost.update(player.getPosition().x, fog_near, fog_far)
@@ -165,6 +171,16 @@ function animate()
 	if(LoadingScreen.progress < 100)
 	{
 		LoadingScreen.update()
+	}
+
+	if(player.going_right_path && !game_over)
+	{
+		player.jumpRightPath()
+	}
+
+	if(player.going_left_path && !game_over)
+	{
+		player.jumpLeftPath()
 	}
 
 	renderer.getRenderer().render(scene, camera);
@@ -186,24 +202,13 @@ function setOnGameOver()
 
 document.getElementById('retry_button').addEventListener('click', function(e)
 {
-	console.log("ASD");
+	let event = new Event('game_reset')
+	document.dispatchEvent(event)
 
-	for (var i = 0; i < enemies.length; i++) {
-		let _enemy = enemies[i]
-		scene.remove(_enemy.object)
-	}
-
-	enemies = []
-
-	console.log(enemies)
-
-	addEnemies();
-
-	console.log(enemies)
-
+	player = new Player(scene, camera)
+	player.make()
+	
 	game_over = false
-
-	bruh = 'oof'
 
 	clock.start()
 
@@ -250,13 +255,12 @@ document.addEventListener('keydown', (event) => {
 			// case 40: // down
 			// 	player_object.position.y -= player_movement_speed;
 			// 	break;
-			// case 39: // right
-			// 	player_object.position.x += player_movement_speed;
-			// 	console.log("going right")
-			// 	break;
-			// case 37: // left
-			// 	player_object.position.x -= player_movement_speed;
-			// 	break;
+			case 39: // right
+				player.goRight()
+				break;
+			case 37: // left
+				player.goLeft()
+				break;
 			case 32: // spacebar
 				player.jump()
 				break;
