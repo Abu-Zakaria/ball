@@ -9,16 +9,16 @@ body
 {
 	display: none;
 	position: fixed;
-	padding: 15px;
+	padding: 20px;
 	border: 0px solid red;
 	color: white;
 	outline: none;
 	color: black;
 	font-family: 'Press Start 2P', cursive;
     border-radius: 50%;
-    height: 80px;
-    width: 80px;
-    background: rgba(255, 255, 255, 0.5);
+    height: 92px;
+    width: 92px;
+    background: rgba(255, 255, 255, 0.3);
 }
 
 #jump_button_1
@@ -35,13 +35,13 @@ body
 
 #left_button
 {
-	bottom: 15%;
+	bottom: 12%;
 	left: 10px
 }
 
 #right_button
 {
-	bottom: 15%;
+	bottom: 12%;
 	right: 10px
 }
 
