@@ -100,7 +100,7 @@ class Boss
 		let object = new THREE.Mesh(geometry, material)
 
 		object.position.x = this.boss_model.position.x
-		object.position.y = this.boss_model.position.y
+		object.position.y = this.boss_model.position.y + 2
 		object.position.z = this.boss_model.position.z
 
 		this.scene.add(object)
