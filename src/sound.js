@@ -1,6 +1,6 @@
 import LoadingScreen from './loadingScreen.js'
 
-export default class Sound
+class Sound
 {
 	constructor()
 	{
@@ -9,7 +9,9 @@ export default class Sound
 		this.background_1_audio = new Audio(this.path + 'background_music_1.mp3')
 		
 		this.jump_audio
+		this.shooting_audio
 
+		this.loadShootingSound()
 		LoadingScreen.loadingCompleted("audio")
 
 		document.addEventListener('gfx_changed', () => {
@@ -29,6 +31,16 @@ export default class Sound
 		this.jump_audio.play()
 	}
 
+	loadShootingSound()
+	{
+		this.shooting_audio = new Audio(this.path + 'shooting.mp3')
+	}
+
+	playShootingSound()
+	{
+		this.shooting_audio.play()
+	}
+
 	playGameOver()
 	{
 		this.gameover_audio.play()
@@ -45,4 +57,10 @@ export default class Sound
 	}
 }
 
-Sound.path = '../resources/sounds/'
+Sound.instance
+Sound.init = function()
+{
+	Sound.instance = new Sound()
+}
+
+export default Sound

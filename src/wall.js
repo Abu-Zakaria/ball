@@ -7,7 +7,7 @@ export default class Wall
 	{
 		this.color = 0x0000ff
 		this.height = 10
-		this.length = 1000
+		this.length = 30000
 		this.object;
 		this.far_position = 8
 		this.scene = scene

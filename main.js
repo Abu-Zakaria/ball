@@ -8,7 +8,6 @@ import Ground from './src/ground.js'
 import Sky from './src/sky.js'
 import Score from './src/score.js'
 import Lights from './src/lights.js'
-import Lamppost from './src/lamppost.js'
 import Footpath from './src/footpath.js'
 import LoadingScreen from './src/loadingScreen.js'
 import Renderer from './src/renderer.js'
@@ -22,8 +21,8 @@ const scene = new THREE.Scene();
 
 const fogColor = 0x000000;
 
-let fog_far = 100;
-let fog_near = 30;
+let fog_far = Settings.fog_far;
+let fog_near = Settings.fog_near;
 
 scene.fog = new THREE.Fog(fogColor, fog_near, fog_far)
 
@@ -37,7 +36,10 @@ LoadingScreen.init()
 
 let settings = new Settings()
 
-// const orbitControl = new OrbitControls(camera, renderer.getRenderer().domElement)
+const orbitControl = new OrbitControls(camera, renderer.getRenderer().domElement)
+
+Sound.init()
+let sound = Sound.instance;
 
 let player = new Player(scene, camera)
 player.make()
@@ -49,10 +51,6 @@ let lights = new Lights()
 // lights.makeHemisphereLight(scene)
 lights.makeAmbientLight(scene)
 
-let lamppost = new Lamppost()
-
-lamppost.init(scene)
-
 let footpath = new Footpath()
 
 footpath.make(scene)
@@ -62,8 +60,6 @@ ground.make()
 
 // let sky = new Sky()
 // sky.make(scene)
-
-let sound = new Sound();
 
 let jumping,
 	a_y = 0.5,
@@ -75,6 +71,10 @@ let game_over = false
 function start_game()
 {
 	game_started = true
+	let event = new Event('game_started')
+	document.dispatchEvent(event)
+
+	Enemy.loadTexture()
 }
 
 let clock = new THREE.Clock()
@@ -98,36 +98,6 @@ clock.start();
 // addEnemies()
 let bruh = 'bruh';
 
-function motionEnemies()
-{
-	if(game_over)
-	{
-		return false
-	}
-	console.log('bruh', bruh)
-	for (var i = 0; i < enemies.length; i++) {
-		let enemy = enemies[i]
-
-
-		enemy.check_status();
-
-		if(enemy.isVisible())
-		{
-			enemy.moveLeft();
-
-			if(enemy.hasCollided(player_object))
-			{
-				setOnGameOver();
-			}
-
-			if(enemy.getPosition().x < -10)
-			{
-				scene.remove(enemy.object)
-			}
-		}
-	}
-}
-
 // const player_movement_speed = 0.1;
 
 let wall = new Wall(scene)
@@ -144,7 +114,7 @@ function animate()
 	{
 		player.updateJump(camera, camera_pos)
 	}
-	if(game_started && !Boss.summoned)
+	if(game_started && !Boss.summoned && !Player.dead)
 	{
 		player.run()
 	}
@@ -159,8 +129,6 @@ function animate()
 			setOnGameOver()
 		}
 	}
-
-	lamppost.update(player.getPosition().x, fog_near, fog_far)
 
 	if(!game_over && game_started)
 	{
@@ -181,6 +149,12 @@ function animate()
 	if(player.going_left_path && !game_over)
 	{
 		player.jumpLeftPath()
+	}
+
+	if(Player.dead && !game_over)
+	{
+		console.log("GAME OVER")
+		setOnGameOver()
 	}
 
 	renderer.getRenderer().render(scene, camera);

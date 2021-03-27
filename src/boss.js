@@ -1,5 +1,6 @@
 import { GLTFLoader } from '../lib/GLTFLoader.js'
 import Player from './player.js'
+import Sound from './sound.js'
 import { get3DDistance, randomNumber } from './utils.js'
 
 class Boss
@@ -22,9 +23,11 @@ class Boss
 
 		this.boss_model
 		this.boss_texture_loader
-		this.cooling_down = false
+		this.cooling_down = true
 
 		this.bullets = []
+
+		this.sound = Sound.instance
 
 		let _this = this
 		document.addEventListener('game_reset', function()
@@ -58,7 +61,9 @@ class Boss
 			_this.update()
 			_this.runFloating()
 
-			Boss.fighting = true
+			setTimeout(() => {
+				Boss.fighting = true
+			}, 1000)
 		})
 	}
 
@@ -88,7 +93,7 @@ class Boss
 
 	shoot()
 	{
-		let geometry = new THREE.BoxGeometry(1, 0.1, 0.2)
+		let geometry = new THREE.BoxGeometry(1, 0.1, 0.4)
 
 		let material = new THREE.MeshBasicMaterial({color: 0xffffff})
 
@@ -108,6 +113,9 @@ class Boss
 			vy: velocities.vy,
 			vz: velocities.vz
 		})
+
+		console.log("sound: ", this.sound)
+		this.sound.playShootingSound()
 	}
 
 	moveBullets()
@@ -116,7 +124,7 @@ class Boss
 		{
 			let bullet = this.bullets[i]
 
-			let speed = 0.6
+			let speed = 0.4
 			let object = bullet.object
 			let vx = bullet.vx * speed
 			let vy = bullet.vy * speed

@@ -6,7 +6,7 @@ export default class Footpath
 	{
 		this.far_position = 7;
 		this.texture_path = 'resources/textures/footpath.jpg'
-		this.length = 1000;
+		this.length = 30000;
 		this.width = 2
 		this.object;
 

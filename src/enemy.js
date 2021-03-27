@@ -1,18 +1,30 @@
-import { getDistance, randomNumber } from './utils.js'
+import { get3DDistance, randomNumber } from './utils.js'
 
-export default class Enemy
+class Enemy
 {
-	constructor(scene, clock)
+	constructor(scene, player)
 	{
 		this.object = null;
 		this.speed = 0.12;
 		this.geometry = null;
 		this.radius = 1;
-		this.spawn_point = 20
+		this.spawn_point = 45
+		this.spawn_line = 0
 		this.spawn_time = randomNumber(1, 80);
 		this.visible = false
 		this.scene = scene
-		this.clock = clock
+		this.player = player
+
+		this.colors = [0xff0000, 0x00ff00, 0x0000ff, 0x0f0f0f, 0xf0f0f0]
+
+		this.texture
+
+		let _this = this
+
+		document.addEventListener('game_reset', function()
+		{
+			_this.destroy()
+		})
 	}
 
 	isVisible()
@@ -33,14 +45,39 @@ export default class Enemy
 	makeBox()
 	{
 		this.geometry = new THREE.BoxGeometry(this.radius, this.radius, this.radius);
-		let material = new THREE.MeshPhongMaterial({color: 0x0000ff})
+		let rand = randomNumber(0, this.colors.length - 1)
 
+		let material;
+
+		if(Enemy.texture)
+		{
+			material = new THREE.MeshPhongMaterial({map: Enemy.texture})
+		}
+		else
+		{
+			let color = this.colors[rand]
+			material = new THREE.MeshPhongMaterial({color: color})
+		}
 
 		this.object = new THREE.Mesh(this.geometry, material)
 
-		this.object.name = "asd_" + this.clock.getElapsedTime();
+		rand = randomNumber(0, 3)
+		this.object.position.x = this.player.position.x + this.spawn_point
+		this.object.position.y = this.radius / 2
+		if(rand == 0)
+		{
+			this.object.position.z = this.spawn_line - 2
+		}
+		else if(rand == 1)
+		{
+			this.object.position.z = this.spawn_line
+		}
+		else if(rand == 2)
+		{
+			this.object.position.z = this.spawn_line + 2
+		}
 
-		this.object.position.x = this.spawn_point
+		this.scene.add(this.object)
 
 		return this.object
 	}
@@ -50,11 +87,11 @@ export default class Enemy
 		this.object.position.x -= this.speed;
 	}
 
-	hasCollided(player)
+	hasCollided(player, player_size)
 	{
-		if(
-			(getDistance(this.object.position.x, this.object.position.y,
-								player.position.x, player.position.y) - (this.radius + 0.2)) <= 0)
+		if( (get3DDistance(this.object.position.x, this.object.position.y, this.object.position.z,
+								player.position.x, player.position.y, player.position.z)
+								- (this.radius + player_size)) <= 0)
 		{
 			console.log("Collision data: ", this.object.position.x, this.object.position.y,
 								player.position.x, player.position.y)
@@ -80,4 +117,21 @@ export default class Enemy
 			this.scene.add(this.object)
 		}
 	}
+
+	destroy()
+	{
+		this.object.geometry.dispose()
+		this.object.material.dispose()
+		this.scene.remove(this.object)
+	}
 }
+
+Enemy.loadTexture = function() {
+	console.log("LOADING TEXTURE: ENEMY")
+	new THREE.TextureLoader().load('../resources/textures/box.png', (texture) => {
+			Enemy.texture = texture
+		})
+}
+Enemy.texture
+
+export default Enemy

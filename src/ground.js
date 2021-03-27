@@ -6,7 +6,7 @@ export default class Ground
 	constructor(scene)
 	{
 		this.geometry
-		this.length = 1000;
+		this.length = 30000;
 		this.width = 12;
 		this.object;
 		this.texture_path = 'resources/textures/road.jpg'

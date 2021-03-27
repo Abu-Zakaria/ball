@@ -1,6 +1,9 @@
 import Sound from './sound.js'
 import Settings from './settings.js'
 import Boss from './boss.js'
+import Enemy from './enemy.js'
+import { randomNumber } from './utils.js'
+import Lamppost from './lamppost.js'
 
 class Player
 {
@@ -16,17 +19,20 @@ class Player
 		this.a_y = 0.5; // gravity
 		this.v_y = 0; // speed
 
-		this.sound = new Sound()
+		this.sound = Sound.instance
 		this.sound.loadJump()
 
 		this.speed = 0.1;
 		this.lookAhead = 0.1
 		this.boss
+		this.lamppost
 
 		this.right_path_coord = 2
 		this.left_path_coord = -2
 		this.going_right_path = false
 		this.going_left_path = false
+
+		this.enemies = []
 
 		let _this = this
 		document.addEventListener('gfx_changed', function()
@@ -39,6 +45,49 @@ class Player
 		{
 			_this.destroy()
 			Player.dead = false
+			Player.stage = 1
+			_this.enemies = []
+		})
+
+		document.addEventListener('second_stage_reached', function()
+		{
+			Player.stage = 2
+			console.log('second stage')
+			for (var i = 0; i < 3000; i++)
+			{
+				_this.speed += 0.1 / 3000
+			}
+		})
+		document.addEventListener('third_stage_reached', function()
+		{
+			Player.stage = 3
+			console.log('third stage')
+			for (var i = 0; i < 3000; i++)
+			{
+				_this.speed += 0.2 / 3000
+			}
+		})
+
+		document.addEventListener('last_stage_reached', function()
+		{
+			Player.stage = 4
+			console.log('last stage')
+		})
+		document.addEventListener('game_difficulty_changed', function()
+		{
+			console.log("listened", Settings.game_difficulty)
+			if(Settings.game_difficulty === 0)
+			{
+				_this.speed = 0.1
+			}
+			else if (Settings.game_difficulty == 1)
+			{
+				_this.speed = 0.2
+			}
+			else if (Settings.game_difficulty == 2)
+			{
+				_this.speed = 0.3
+			}
 		})
 	}
 
@@ -50,7 +99,9 @@ class Player
 
 		this.player = new THREE.Mesh(player_geometry, player_material)
 
+		this.player.position.x = 0;
 		this.player.position.y = (this.player_size);
+		this.player.position.z = 0;
 
 		if(Settings.gfx_quality == 'high')
 		{
@@ -60,6 +111,8 @@ class Player
 		this.player.name = 'player'
 
 		this.scene.add(this.player)
+
+		this.lamppost = new Lamppost(this.scene)
 	}
 
 	updateJump(camer_pos)
@@ -67,7 +120,6 @@ class Player
 		if(this.jumping)
 		{
 			let dif = (this.v_y - this.a_y) / 30
-			console.log('asd', this.player.position.y, dif, this.player.position.y + dif)
 			if(this.player.position.y + dif <= 0.5)
 			{
 				this.player.position.y = this.player_size;
@@ -164,6 +216,8 @@ class Player
 
 	run()
 	{
+		let dif = Settings.game_difficulty
+	
 		this.player.position.x += this.speed
 
 		if(this.camera.position.y < 9)
@@ -191,14 +245,28 @@ class Player
 				this.player.position.z
 			)
 
-		if(this.player.position.x > 20 && !Boss.summoned)
+		if(Player.stage == 4 && !Boss.summoned)
 		{
 			Boss.summoned = true
 			this.boss = new Boss(this.scene)
 			this.boss.player = this.player
 
 			this.boss.make()
+
+			for (var i = 0; i < this.enemies.length; i++)
+			{
+				let enemy = this.enemies[i]
+				enemy.object.geometry.dispose()
+				enemy.object.material.dispose()
+				this.scene.remove(enemy.object)
+				delete this.enemies[i]
+			}
+			this.enemies = []
 		}
+
+		this.fetchEnemies()
+
+		this.renderLampposts()
 	}
 
 	facingBoss()
@@ -207,6 +275,48 @@ class Player
 		{
 			this.boss.update()
 		}
+	}
+
+	fetchEnemies()
+	{
+		let freq = 60 / (Player.stage * 1.4)
+		let rand = randomNumber(0, freq)
+
+		if(rand == Math.floor(rand / 2))
+		{
+			let enemy = new Enemy(this.scene, this.player)
+
+			let box_enemy = enemy.makeBox()
+
+			this.enemies.push({
+				enemy: enemy,
+				object: box_enemy
+			})
+		}
+
+		for (var i = 0; i < this.enemies.length; i++)
+		{
+			let enemy = this.enemies[i]
+
+			if(enemy.enemy.hasCollided(this.player, this.player_size))
+			{
+				Player.dead = true
+			}
+
+			if(enemy.object.position.x < this.player.position.x - 10)
+			{
+				enemy.object.geometry.dispose()
+				enemy.object.material.dispose()
+				this.scene.remove(enemy.object)
+				delete this.enemies[i]
+				this.enemies = this.enemies.filter(val => val)
+			}
+		}
+	}
+
+	renderLampposts()
+	{
+		this.lamppost.update(this.getPosition().x)
 	}
 
 	getPosition()
@@ -240,5 +350,6 @@ class Player
 }
 
 Player.dead = false
+Player.stage = 1
 
 export default Player
