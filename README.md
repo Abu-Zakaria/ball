@@ -9,7 +9,7 @@ You can find the game in this link - <a href="https://cynax.netlify.com">https:/
 
 # Todo
 - [x] Add textures
-- [ ] Add enemies
-- [ ] Add boss-fight
-- [ ] Add game settings
-- [ ] Add some more background musics 
+- [x] Add enemies
+- [x] Add boss-fight
+- [x] Add game settings
+- [x] Add some more background musics 
