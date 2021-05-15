@@ -16,7 +16,7 @@ export default class Renderer
 		this.renderer.shadowMap.type = true;
 		// console.log()
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
-		this.renderer.outputEncoding = THREE.sRGBEncoding
+		this.renderer.outputEncoding = THREE.sRGBEncoding 
 
 		this.default_pixel_ratio = this.renderer.getPixelRatio()
 

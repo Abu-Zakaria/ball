@@ -26,6 +26,7 @@ class Settings
 		Settings.gfx_quality = document.getElementById('graphics_quality').value
 		let event = new Event('gfx_changed')
 		document.dispatchEvent(event)
+		console.log("loaded", LoadingScreen.resources)
 	}
 
 	closeSettingsScreen()

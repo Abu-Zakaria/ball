@@ -35,6 +35,9 @@ class Player
 		this.enemies = []
 
 		let _this = this
+
+		this.setupDifficulty()
+		
 		document.addEventListener('gfx_changed', function()
 		{
 			_this.destroy()
@@ -76,18 +79,7 @@ class Player
 		document.addEventListener('game_difficulty_changed', function()
 		{
 			console.log("listened", Settings.game_difficulty)
-			if(Settings.game_difficulty === 0)
-			{
-				_this.speed = 0.1
-			}
-			else if (Settings.game_difficulty == 1)
-			{
-				_this.speed = 0.2
-			}
-			else if (Settings.game_difficulty == 2)
-			{
-				_this.speed = 0.3
-			}
+			_this.setupDifficulty()
 		})
 	}
 
@@ -346,6 +338,22 @@ class Player
 		this.player.material.dispose()
 		this.scene.remove(this.player)
 		this.boss_model = null
+	}
+
+	setupDifficulty()
+	{
+		if(Settings.game_difficulty === 0)
+		{
+			this.speed = 0.1
+		}
+		else if (Settings.game_difficulty == 1)
+		{
+			this.speed = 0.2
+		}
+		else if (Settings.game_difficulty == 2)
+		{
+			this.speed = 0.3
+		}
 	}
 }
 

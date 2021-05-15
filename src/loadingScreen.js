@@ -25,6 +25,10 @@ class LoadingScreen
 			{
 				name: "audio",
 				loaded: false
+			},
+			{
+				name: "texture_enemy",
+				loaded: false
 			}
 		]
 	}

@@ -1,10 +1,10 @@
 const path = require('path');
 
 module.exports = {
-	mode: 'development',
+	mode: 'production',
 	entry: './main.js',
 	output: {
 		path: path.resolve(__dirname, 'dist'),
-		filename: 'dino.bundle.js'
+		filename: 'ball.min.js'
 	}
 }

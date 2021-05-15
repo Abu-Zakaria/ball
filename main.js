@@ -36,7 +36,7 @@ LoadingScreen.init()
 
 let settings = new Settings()
 
-const orbitControl = new OrbitControls(camera, renderer.getRenderer().domElement)
+// const orbitControl = new OrbitControls(camera, renderer.getRenderer().domElement)
 
 Sound.init()
 let sound = Sound.instance;
@@ -68,13 +68,13 @@ let jumping,
 let game_started = false
 let game_over = false
 
+Enemy.loadTexture()
+
 function start_game()
 {
 	game_started = true
 	let event = new Event('game_started')
 	document.dispatchEvent(event)
-
-	Enemy.loadTexture()
 }
 
 let clock = new THREE.Clock()
@@ -127,6 +127,14 @@ function animate()
 			Boss.fighting = false
 			console.log("GAME OVER")
 			setOnGameOver()
+		}
+		if(camera.position.y > 5)
+		{
+			camera.position.y -= 0.05
+		}
+		if((player.player.position.x - 8)  > camera.position.x)
+		{
+			camera.position.x += 0.05
 		}
 	}
 

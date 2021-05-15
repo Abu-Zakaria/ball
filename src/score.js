@@ -10,8 +10,8 @@ export default class Score
 		this.final_score_point_text = document.getElementById('final_score')
 
 		this.second_stage_points = 800
-		// this.third_stage_points = 1500
-		this.last_stage_points = 1200
+		this.third_stage_points = 1500
+		this.last_stage_points = 2000
 	}
 
 	getPoints()

@@ -1,4 +1,5 @@
 import { get3DDistance, randomNumber } from './utils.js'
+import LoadingScreen from './loadingScreen.js'
 
 class Enemy
 {
@@ -128,7 +129,14 @@ class Enemy
 
 Enemy.loadTexture = function() {
 	console.log("LOADING TEXTURE: ENEMY")
+	
+	document.addEventListener('gfx_changed', () => {
+		// faking loading the texture, because this texture doesnt depend on gfx settings
+		LoadingScreen.loadingCompleted("texture_enemy")
+	})
+
 	new THREE.TextureLoader().load('../resources/textures/box.png', (texture) => {
+			LoadingScreen.loadingCompleted("texture_enemy")
 			Enemy.texture = texture
 		})
 }

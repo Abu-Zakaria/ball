@@ -30,6 +30,11 @@ export default class Camera
 
 	getCameraPosition()
 	{
-		this.camera_pos
+		return this.camera_pos
+	}
+
+	getCamera()
+	{
+		return this.camera
 	}
 }

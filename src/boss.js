@@ -93,14 +93,14 @@ class Boss
 
 	shoot()
 	{
-		let geometry = new THREE.BoxGeometry(1, 0.1, 0.4)
+		let geometry = new THREE.BoxGeometry(0.5, 0.3, 0.2)
 
 		let material = new THREE.MeshBasicMaterial({color: 0xffffff})
 
 		let object = new THREE.Mesh(geometry, material)
 
 		object.position.x = this.boss_model.position.x
-		object.position.y = this.boss_model.position.y + 2
+		object.position.y = this.boss_model.position.y + 4
 		object.position.z = this.boss_model.position.z
 
 		this.scene.add(object)
@@ -176,9 +176,10 @@ class Boss
 				bullet.position.x - this.player.position.x
 			)
 
-		let vx = Math.cos(angle_x) * 1
-		let vy = Math.sin(angle_x) * 1
-		let vz = Math.sin(angle_z) * 1
+		let speed = 1.3
+		let vx = Math.cos(angle_x) * speed
+		let vy = Math.sin(angle_x) * speed
+		let vz = Math.sin(angle_z) * speed
 
 		return {
 			vx: vx,
